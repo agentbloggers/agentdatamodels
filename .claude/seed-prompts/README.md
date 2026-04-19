@@ -13,6 +13,10 @@ metadata.
 |---|---|---|---|
 | 001 | `001-repo-positioning.md` | 2026-04-19 | Set repo positioning (workflow builder for claude-code outside terminal) |
 | 002 | `002-subdirs-and-subagents.md` | 2026-04-19 | Scaffold src/web/ subdirs, .claude-plugins/, GitHub GraphQL, subagent system |
+| 003 | `003-makefile-services-graphql-control-plane.md` | 2026-04-19 | Start Postgres+Redis, build Makefile, hash-gate docs, use GraphQL as control-access plane |
+| 004 | `004-octokit-markdown-neon-enterprise.md` | 2026-04-19 | Pin @octokit/graphql + markdown-it; document Neon isolated subagents, Well-Architected, Max OAuth, HF, Cloudflare 20 |
+| 005 | `005-polyrepo-not-deferred.md` | 2026-04-19 | Polyrepo is in flight, not deferred — document the full recommendation |
+| 006 | `006-check-and-save-seed-prompts.md` | 2026-04-19 | Meta: verify seed-prompt format + save remaining session prompts |
 
 ## Conventions
 

@@ -1,124 +1,104 @@
 # wellarchitected
 
 GitHub's Well-Architected Framework (`wellarchitected.github.com`) —
-what we adopt, what we defer, and why.
+how we're applying it to `agentdatamodels` and its future siblings.
 
-## Status
+## Framework shape
 
-**Reference-only.** We document the framework here because it maps
-directly onto where this repo is heading (the user's 20 Cloudflare
-`agent*.com` domains are candidate sibling repos). We are **not**
-implementing the polyrepo layer yet — per user direction, device
-surfaces stabilize first.
+Per `/library/overview/layers/`, the framework has **five pillars**:
 
-## Layers
+1. **Productivity** — team efficiency, workflow streamlining
+2. **Collaboration** — cross-team practices on GitHub
+3. **Application Security** — security across the dev lifecycle
+4. **Governance** — access, compliance, policy
+5. **Architecture** — scalable, resilient GitHub envs
 
-Per `https://wellarchitected.github.com/library/overview/layers/`:
+Each pillar has: **design principles** (how to achieve the what),
+**checklists** (questions + data points for evaluation), and
+**recommendations** (scenario-based Content Library articles with
+tradeoffs).
 
-| Layer | What lives here |
+Per `/library/overview/getting-started-checklist/`, the intended
+on-ramp is:
+
+1. Engage with GitHub or a Partner expert (we skip — self-serve)
+2. Review the five pillars
+3. Initial GitHub environment review against pillars
+4. Stakeholder interviews (we skip — single-author repo)
+5. Analysis and scoring
+6. Recommendation review
+
+## Honest status (not "deferred")
+
+User correction: the polyrepo work is **in flight**, not deferred.
+We've been making the mistake of calling early structural decisions
+"just setup" when they ARE the polyrepo foundation.
+
+### Where we stand against the 8 polyrepo-engineering steps
+
+| # | Step | Status | Evidence in repo |
+|---|---|---|---|
+| 1 | Integration layer (meta-repo) | ⚠️ **in progress (intra-repo)** | `src/web/dependencies/manifest.yaml` is the seed manifest; currently lives *inside* this repo — will be extracted into a dedicated meta-repo when sibling repos graduate |
+| 2 | Change-set pattern | ❌ not started | No `CHG-NNNN` scheme yet — we use `$CLAUDE_CODE_REMOTE_SESSION_ID` for session trace, which is the analog but not the same |
+| 3 | Branching/merge coordination | ⚠️ partial | All Claude work on `claude/*` branches (per Routines convention); no integration branches yet |
+| 4 | Reusable workflow governance | ❌ not started | No `.github/workflows/` yet; `Makefile` is the current versioned-delivery surface |
+| 5 | Release governance | ❌ not started | No version tags, no system-release manifest |
+| 6 | Security campaigns (GHAS) | ❌ not configured | GHAS available via enterprise subscription; no secret-scanning / Dependabot / code-scanning campaigns yet |
+| 7 | Orchestration model | ✅ **started** | `.claude/agents/` IS the orchestrator/executor pattern — main session orchestrates, subagents execute; `routine-builder` and `plugin-integrator` map cleanly onto the pattern |
+| 8 | Unified experience | ⚠️ partial | `/tasks`, `make doctor-web`, `.claude/graphql-runs/` reports give panes-of-glass; no Project board yet |
+
+### Against the five pillars
+
+| Pillar | Where we're investing |
 |---|---|
-| **Architecture** | System-level patterns: polyrepo vs monorepo, integration layer, change sets |
-| **Delivery** | Reusable workflows, release governance, orchestration |
-| **Security** | Advanced Security campaigns, secret scanning, SBOM |
-| **Experience** | Projects, dashboards, correlation IDs |
+| **Productivity** | `CLAUDE.md` + subagents + skills; every `make *-web` target is idempotent |
+| **Collaboration** | Seed prompts + docs-librarian subagent mean a new contributor's first PR can follow the existing pattern |
+| **Application Security** | `.claude/settings.json` permissions; plugin install trust rules; `alignment/` topic in `src/web/` |
+| **Governance** | `manifest.yaml` pins; `upstream-hashes.json` + `make graphql-web` as the audit surface |
+| **Architecture** | The topic this folder is tracking — polyrepo readiness |
 
-Each recommendation is written as "Problem → Approach → Evidence".
-Cite by recommendation ID when referencing in our docs.
+## Where to go next
 
-## Getting-started checklist
+The detailed recommendation lives at
+**[`polyrepo-engineering.md`](./polyrepo-engineering.md)** — the full
+8-step implementation with tradeoff tables, coordination-model
+options, and the phased adoption roadmap.
 
-Per `https://wellarchitected.github.com/library/overview/getting-started-checklist/`:
+Near-term plan items that move us up the polyrepo maturity curve:
 
-1. Pick a scenario that matches your org's scale.
-2. Inventory your repos + workflows.
-3. Identify your integration layer candidate (where cross-repo
-   contracts live).
-4. Pick a change-set identifier scheme (`CHG-NNNN` is the
-   recommended default).
-5. Adopt one reusable workflow before branching out.
+1. **Introduce change-set IDs.** Choose `CHG-NNNN` format. Start
+   using them in PR titles on this repo immediately — they become
+   the parent-issue primary key when we extract the meta-repo.
+2. **Add the first reusable workflow.** Convert `make graphql-web`
+   into a `.github/workflows/graphql-web.yml` that any sibling repo
+   can call via `uses: agentbloggers/agentdatamodels/.github/workflows/graphql-web.yml@<sha>`.
+3. **Promote `manifest.yaml` to a tagged artifact.** Every change to
+   `pinned_cli`, `pinned_node`, or any org pin gets a tag
+   (`manifest-2026.04.19` style) so sibling repos can reference an
+   immutable ref.
+4. **Set up GitHub Projects.** Track this repo's issues + future
+   sibling-repo issues in a single Project, with custom fields for
+   change-set ID, team, and SLA.
 
-Our progress:
+## Critical principle (quoted from the recommendation)
 
-- ✅ Inventory — `src/web/dependencies/manifest.yaml`
-- ✅ One reusable unit — the `track-upstream` + `graphql-deps`
-  scripts, exposed via `make graphql-web`
-- ⏳ Integration layer — deferred (single repo for now)
-- ⏳ Change-set IDs — deferred
-- ⏳ Reusable workflows (GitHub Actions) — deferred
+> "Avoid floating references (`@main`) in production paths. Pin
+> workflows and dependencies to stable references: reusable
+> workflows at `@vN` or `@vN.N.N`, and integration manifests at
+> release tags or SHAs. Use PR SHAs only in integration candidates,
+> then promote to tags."
 
-## Polyrepo engineering (deferred)
+Our `src/web/dependencies/manifest.yaml` is the enforcement surface.
+When `make graphql-web` flags drift, that's the intended
+early-warning signal.
 
-Per `.../implementing-polyrepo-engineering/`:
+## Related topics in this repo
 
-Three core principles:
-
-1. **Integration layer (meta-repo)** — a dedicated repo answering
-   "do these component versions work together?" via a pinned
-   manifest. Our `src/web/dependencies/manifest.yaml` is the seed
-   of this pattern (currently intra-repo).
-2. **Change sets** — parent tracking issue in the meta-repo, child
-   issues per affected component, linked by `CHG-NNNN`. Not yet.
-3. **Branching & merge coordination** — pick one of: integration
-   branches, meta-repo manifests, versioned artifacts, linked PRs
-   with merge gating. We'll pick once we have ≥ 2 repos to
-   coordinate.
-
-Eight implementation steps (not started):
-
-1. Establish integration layer (meta-repo)
-2. Implement change-set pattern
-3. Choose branching/merge coordination model
-4. Set up reusable workflow governance
-5. Define release governance (component vs system releases)
-6. Implement security campaigns with GitHub Advanced Security
-7. Deploy orchestration model
-8. Compose unified experience via Projects + dashboards
-
-## What we're doing *now* that aligns with the framework
-
-- **Pinning everything**: `manifest.yaml` pins Node, CLI, SDK, every
-  watched package + doc-page hash. Upstream Well-Architected rule:
-  "Avoid floating refs (`@main`) in production paths."
-- **Versioned interface**: `make *-web` targets are our versioned
-  delivery surface — every cloud session runs the same make targets.
-- **Correlation IDs**: we use `CLAUDE_CODE_REMOTE_SESSION_ID` as the
-  cross-artifact trace (PR bodies, commit footers, eval run
-  reports). Analogous to `CHG-NNNN`.
-
-## Critical principle (quoted)
-
-> "Avoid floating refs (`@main`) in production paths. Pin workflows
-> and dependencies to stable references."
-
-Our `manifest.yaml` is the enforcement surface. When
-`make graphql-web` flags drift, that's the intended early-warning
-signal.
-
-## Sibling-repo strategy (future)
-
-When we flip from single-repo to polyrepo (see
-`src/web/enterprise/README.md` for the 20 domain list), this repo
-becomes the **integration layer**:
-
-- Each sibling repo (`agent<thing>.com`) pins versions of shared
-  components (skills, MCP servers, plugin set) via this repo's
-  `manifest.yaml`.
-- Change sets: a PR to a sibling repo opens a `CHG-NNNN` tracking
-  issue here.
-- Reusable workflows live under `.github/workflows/` in this repo,
-  referenced by siblings as `@<immutable-sha>`.
-
-## Directives
-
-- Cite the framework's recommendation IDs when justifying an
-  architectural decision in a PR body.
-- When in doubt between monorepo and polyrepo, stay with what we
-  have (single repo) until a concrete cross-repo contract emerges.
-- Floating refs (`@main`, `@latest`) are acceptable in
-  **read-only** discovery queries. They are forbidden in anything
-  that consumers depend on.
-- The meta-repo pattern only works if the pinning surface is
-  `manifest.yaml` — don't add a second pinning mechanism.
+- `src/web/dependencies/` — our (embryonic) integration manifest
+- `src/web/enterprise/` — Cloudflare domains reserved as future
+  sibling repos; Claude Code Max OAuth; GitHub Enterprise
+- `src/web/subtasks/` — subagent (executor) patterns
+- `.claude/agents/` — our orchestrator/executor roster
 
 ## Source
 
@@ -126,3 +106,4 @@ becomes the **integration layer**:
 - `https://wellarchitected.github.com/library/overview/layers/`
 - `https://wellarchitected.github.com/library/overview/getting-started-checklist/`
 - `https://wellarchitected.github.com/library/architecture/recommendations/implementing-polyrepo-engineering/`
+  (complete content mirrored in `polyrepo-engineering.md`)
