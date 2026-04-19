@@ -17,5 +17,19 @@
     "github@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
     "figma@claude-plugins-official": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "agent",
+            "prompt": "Run every eval under $CLAUDE_PROJECT_DIR/src/web/prompt-evals/decisions/*.eval.md. For each file, follow its Check + Scorer + Skip sections exactly. Return one line of JSON per eval: {\"id\":\"D<N>\",\"ok\":bool,\"reason\":str}. Never mutate files in src/web/, .claude/, or the repo root — these evals are read-only. Session continues regardless of results; this is advisory.",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
   }
 }

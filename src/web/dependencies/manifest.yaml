@@ -129,11 +129,21 @@ orgs:
 
 wellarchitected:
   source: https://wellarchitected.github.com/library/
-  references:
-    - https://wellarchitected.github.com/library/overview/layers/
-    - https://wellarchitected.github.com/library/overview/getting-started-checklist/
-    - https://wellarchitected.github.com/library/architecture/recommendations/implementing-polyrepo-engineering/
-  status: "documented, not yet implemented — polyrepo deferred per user until device surfaces settle"
+  release: "2026-Q1"
+  release_notes: https://wellarchitected.github.com/library/overview/release-notes/#2026-q1
+  status: "anchored — drift-checked via pages[*] entries below; every D-level decision in the plan cites a WA page"
+  # Full URLs are tracked under pages:[] above so make graphql-web
+  # picks up any drift in the 2026-Q1 release notes or recommendations.
+  recommendations_q1_2026:
+    new:
+      - implementing-polyrepo-engineering
+      - managing-dependency-threats
+      - expanding-enterprise-custom-agents-context
+    updated:
+      - nist-ssdf-implementation
+      - actions-security
+      - design-principles
+      - anti-patterns
 
 neon:
   source: https://neon.com/guides/isolated-subagents-neon-branching
@@ -250,3 +260,158 @@ pages:
     last_seen: 2026-04-19
     downstream:
       - src/web/llms-txt/README.md
+
+  # Priority CLI docs — Phase A of the Well-Architected Q1 2026 foundation.
+  # See /root/.claude/plans/create-mkdir-src-web-to-memoized-river.md.
+  - url: https://code.claude.com/docs/en/channels.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/channels.md
+      - src/web/primitives.md
+
+  - url: https://code.claude.com/docs/en/hooks-guide.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+      - src/web/directives.md
+
+  - url: https://code.claude.com/docs/en/settings.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+      - src/web/directives.md
+      - src/web/enterprise/README.md
+
+  - url: https://code.claude.com/docs/en/monitoring-usage.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/telemetry.md
+      - src/web/primitives.md
+
+  # GitHub Enterprise + GitHub App + Actions surface — required for
+  # D4-D7 evals and the /install-github-app + /web-setup flows.
+  - url: https://code.claude.com/docs/en/github-actions.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+      - src/web/prompt-evals/decisions/D4-token-scope.eval.md
+      - src/web/prompt-evals/decisions/D5-github-app-installed.eval.md
+
+  - url: https://code.claude.com/docs/en/iam.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+
+  - url: https://code.claude.com/docs/en/setup.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+
+  - url: https://code.claude.com/docs/en/gitlab-ci-cd.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+
+  # GitHub Enterprise docs — live on docs.github.com.
+  - url: https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/about-authentication-for-your-enterprise
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+      - src/web/prompt-evals/decisions/D7-ghe-sso-authorized.eval.md
+
+  - url: https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/security-managers
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+
+  - url: https://docs.github.com/en/apps/creating-github-apps/about-creating-github-apps/about-creating-github-apps
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/enterprise/README.md
+      - src/web/prompt-evals/decisions/D5-github-app-installed.eval.md
+
+  # GitHub Well-Architected Q1 2026 release — the semantic anchor for
+  # D4-D11. Drift on any of these means the plan's framing needs to be
+  # re-checked against the updated WA recommendation.
+  - url: https://wellarchitected.github.com/library/overview/release-notes/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/README.md
+
+  - url: https://wellarchitected.github.com/library/architecture/recommendations/implementing-polyrepo-engineering/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/polyrepo-engineering.md
+      - src/web/wellarchitected/polyrepo-changesets.md
+
+  - url: https://wellarchitected.github.com/library/application-security/recommendations/managing-dependency-threats/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/managing-dependency-threats.md
+      - src/web/prompt-evals/decisions/D8-deps-pinned.eval.md
+
+  - url: https://wellarchitected.github.com/library/architecture/recommendations/expanding-enterprise-custom-agents-context/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/expanding-enterprise-custom-agents-context.md
+      - src/web/prompt-evals/decisions/D10-knowledge-layout.eval.md
+
+  - url: https://wellarchitected.github.com/library/scenarios/nist-ssdf-implementation/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/nist-ssdf-implementation.md
+      - src/web/prompt-evals/decisions/D9-rulesets-enforced.eval.md
+
+  - url: https://wellarchitected.github.com/library/application-security/recommendations/actions-security/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/actions-security.md
+      - src/web/prompt-evals/decisions/D8-deps-pinned.eval.md
+
+  - url: https://wellarchitected.github.com/library/application-security/design-principles/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/design-principles.md
+
+  - url: https://wellarchitected.github.com/library/scenarios/anti-patterns/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/wellarchitected/anti-patterns.md
