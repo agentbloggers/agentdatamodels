@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin.json",
+  "name": "docs-lsp",
+  "version": "0.1.0",
+  "description": "LSP gap-fill for JSON, YAML, and Markdown — file types this repo edits most but that no claude-plugins-official LSP covers. Servers come from vscode-json-languageserver, yaml-language-server, and marksman.",
+  "author": {
+    "name": "agentdatamodels",
+    "url": "https://github.com/agentbloggers/agentdatamodels"
+  },
+  "license": "MIT",
+  "keywords": ["lsp", "json", "yaml", "markdown"]
+}

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-04-19T19:23:51Z",
+  "updated_at": "2026-04-19T19:48:34Z",
   "pages": {
     "https://code.claude.com/docs/en/tools-reference.md": {
       "sha256": "a1391bf8d8abe12499319a782b15695a8014b206c7e75adf9d8cafda937d8f21",
@@ -191,6 +191,46 @@
     },
     "https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises": {
       "sha256": "f1c9666a37d70f6391d7799a860eac0b7c49d5fc126811f630e54e60356be337",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://claude.com/plugins": {
+      "sha256": "bfe7df8dc49c8d14edbc80fa9dbbf5f2c9bd63ebe523526a615b86b1ee5feb34",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/": {
+      "sha256": "b12d398d3628c7b948c79fbca7bcfeb46ddeed138f1c5342a6fffdf5b77f547a",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/": {
+      "sha256": "31ccb1dd5ca1d0e83f884c03769edc9f504bc573dc49ac9a1428b239238a3871",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/overviews/lsif/overview/": {
+      "sha256": "092dd032bac42697b30911a19a4687622cbceb61d00d8eca71ba0b622d7d9164",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/implementors/servers/": {
+      "sha256": "1f496fdd0c847a76b158a661246916a64e3bd7617dc9d7042db11f38743beb82",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/implementors/tools/": {
+      "sha256": "3f82e3e38457374670c82f19c9d3237f0730187acedfd0d6e2e126e425d99ac4",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/implementors/sdks/": {
+      "sha256": "c73d5bbc0fdef07bb5e22ad2aeea82d6a33ecca97db077faa5fb19a5fd1ee410",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://microsoft.github.io/language-server-protocol/implementors/utilities/": {
+      "sha256": "8b66ad368f2d37d4b63f26bb3ff716e25d2ad1ec9a0f4e7d717c25c198e3814b",
       "last_seen": "2026-04-19",
       "first_seen": "2026-04-19"
     }

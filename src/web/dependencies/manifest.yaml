@@ -486,3 +486,69 @@ pages:
     last_seen: null
     downstream:
       - src/web/channels.md
+
+  # Official Anthropic plugins/connectors/skills catalog surface.
+  # Backs src/web/plugins-catalog.md so we know what's available
+  # without installing everything (context bloat avoidance per
+  # CLAUDE.md house rules).
+  - url: https://claude.com/plugins
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/plugins-catalog.md
+      - src/web/plugins.md
+
+  # Microsoft LSP authoritative references — pinned so the D-level
+  # decisions about JSON/YAML/MD LSP gap-fill + language plugin
+  # authoring (see .claude-plugins/docs-lsp/) stay grounded in the
+  # 3.17 spec, not hallucination.
+  - url: https://microsoft.github.io/language-server-protocol/specifications/lsp/3.17/specification/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md
+      - .claude-plugins/docs-lsp/README.md
+
+  - url: https://microsoft.github.io/language-server-protocol/overviews/lsp/overview/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md
+
+  - url: https://microsoft.github.io/language-server-protocol/overviews/lsif/overview/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md
+
+  - url: https://microsoft.github.io/language-server-protocol/implementors/servers/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md
+
+  - url: https://microsoft.github.io/language-server-protocol/implementors/tools/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md
+
+  - url: https://microsoft.github.io/language-server-protocol/implementors/sdks/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md
+
+  - url: https://microsoft.github.io/language-server-protocol/implementors/utilities/
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/lsp/README.md

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "agentdatamodels-local",
+  "description": "Vendored project-scope plugins for agentdatamodels. Gap fills that don't belong in an upstream marketplace — docs-LSP for JSON/YAML/MD, Phase C observability, Phase D WA-aligned tooling.",
+  "owner": {
+    "name": "agentbloggers",
+    "url": "https://github.com/agentbloggers/agentdatamodels"
+  },
+  "plugins": [
+    {
+      "name": "docs-lsp",
+      "source": "./docs-lsp",
+      "description": "LSP gap-fill for JSON, YAML, and Markdown"
+    }
+  ]
+}

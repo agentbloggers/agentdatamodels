@@ -6,6 +6,12 @@
         "source": "github",
         "repo": "anthropics/claude-code"
       }
+    },
+    "agentdatamodels-local": {
+      "source": {
+        "source": "directory",
+        "path": ".claude-plugins"
+      }
     }
   },
   "enabledPlugins": {
@@ -16,7 +22,8 @@
     "pr-review-toolkit@anthropics-claude-code": true,
     "github@claude-plugins-official": true,
     "typescript-lsp@claude-plugins-official": true,
-    "figma@claude-plugins-official": true
+    "figma@claude-plugins-official": true,
+    "docs-lsp@agentdatamodels-local": true
   },
   "hooks": {
     "SessionStart": [
