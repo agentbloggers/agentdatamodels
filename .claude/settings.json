@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "extraKnownMarketplaces": {
+    "anthropics-claude-code": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-code"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "frontend-design@anthropics-claude-code": true,
+    "feature-dev@anthropics-claude-code": true,
+    "commit-commands@anthropics-claude-code": true,
+    "code-review@anthropics-claude-code": true,
+    "pr-review-toolkit@anthropics-claude-code": true,
+    "github@claude-plugins-official": true,
+    "typescript-lsp@claude-plugins-official": true,
+    "figma@claude-plugins-official": true
+  }
+}
