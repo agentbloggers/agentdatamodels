@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "updated_at": "2026-04-19T00:00:00Z",
+  "pages": {
+    "https://code.claude.com/docs/en/tools-reference.md": {
+      "sha256": "a1391bf8d8abe12499319a782b15695a8014b206c7e75adf9d8cafda937d8f21",
+      "snapshot": "src/web/tools/snapshots/tools-reference-2026-04-19.md",
+      "cli_version_at_capture": "2.1.114",
+      "first_seen": "2026-04-19",
+      "last_seen": "2026-04-19"
+    }
+  },
+  "releases": {}
+}

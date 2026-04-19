@@ -13,6 +13,25 @@ and handed off to this repo. The reference material in `src/web/` is the
 knowledge base. Expect both to grow.
 
 Current Claude Code CLI: `@anthropic-ai/claude-code@2.1.114`.
+Pinned upstream versions live in `src/web/dependencies/manifest.yaml`.
+
+## Make targets
+
+`Makefile` at repo root — every target is idempotent:
+
+- `make bootstrap-web` — install `gh`, start services, auth via `$GH_TOKEN`
+- `make install-web` — project-level deps (currently no-op — static site)
+- `make start-web` — start Postgres + Redis + check Docker
+- `make stop-web` — stop Postgres + Redis
+- `make lint-web` — YAML frontmatter + JSON validity checks
+- `make fmt-web` — pretty-print JSON in place
+- `make test-web` — smoke-serve `index.html` and fetch it
+- `make doctor-web` — health check (services, gh auth, CLI version, session URL)
+- `make build-web` — no-op for now (static site)
+- `make graphql-web` — hash-check tracked docs + GraphQL-query pinned repos
+
+Bootstrap is only needed in a cloud session — locally you probably
+already have everything.
 
 ## Where to load context from
 
@@ -28,6 +47,8 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/headless.md` — `claude -p` / `--bare` for CI & scripts
 - `src/web/context-window.md` — what auto-loads, window-budget rules
 - `src/web/claude-dir.md` — `.claude/` layout + cloud visibility
+- `src/web/dependencies/` — upstream manifest + `make graphql-web` control plane
+- `src/web/tools/` — canonical built-in tool names (hash-gated to `tools-reference`)
 - `src/web/references.md` — external canon (cookbooks, skills repo, npm, SDKs)
 - `src/web/sources.md` — provenance for every claim above
 
