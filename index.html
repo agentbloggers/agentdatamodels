@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Claude Code × Neon PG18 — embedding benchmark</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --sans: 'Inter', system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --paper: #f5f3ee;
+    --paper-2: #ece8df;
+    --ink: #1a1a1a;
+  }
+  html, body { margin:0; padding:0; background: var(--paper); color: var(--ink); font-family: var(--sans); }
+  * { box-sizing: border-box; }
+  table th { font-weight: 500; }
+  button:focus, input:focus { outline: 1px solid var(--ink); outline-offset: 2px; }
+  ::selection { background: oklch(0.70 0.15 70); color: var(--ink); }
+</style>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js"></script>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel" src="components/data.jsx"></script>
+<script type="text/babel" src="components/ui.jsx"></script>
+<script type="text/babel" src="components/panels.jsx"></script>
+<script type="text/babel" src="components/app.jsx"></script>
+</body>
+</html>
