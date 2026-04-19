@@ -18,6 +18,7 @@ to be re-checked.
 | D8 | Actions pinned by SHA; Dependabot enabled | both | No workflows yet |
 | D9 | `main` ruleset enforces reviews + checks + linear + signing | both | `GH_TOKEN` lacks `admin:repo` |
 | D10 | `src/web/<domain>/` has `README.md` for multi-file dirs | both | — |
+| D11 | Stream-idle-timeout resilience substrates present (env file + otel table + Redis cache design) | both | — |
 
 ## How these are run
 
