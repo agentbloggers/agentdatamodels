@@ -1,4 +1,4 @@
-.PHONY: help bootstrap-web install-web start-web stop-web lint-web fmt-web test-web doctor-web build-web graphql-web
+.PHONY: help bootstrap-web install-web start-web stop-web lint-web fmt-web test-web doctor-web build-web graphql-web observe-up observe-down
 
 # Default: show help
 help:
@@ -40,25 +40,41 @@ install-web: ## Install project-level deps (npm ci + pip)
 	@python3 -c 'import yaml' 2>/dev/null || python3 -m pip install --quiet pyyaml
 
 # ----------------------------------------------------------------------
-# start-web — start Postgres + Redis + Docker-backed services.
-# In claude-code-on-the-web these are pre-installed but not running.
+# start-web — start the data plane (Phase C.6).
+# Cloud (CLAUDE_CODE_REMOTE=true): uses baked-in system services.
+# Local: uses docker compose where available.
 # ----------------------------------------------------------------------
-start-web: ## Start Postgres, Redis, and docker services
-	@echo "[start-web] starting postgresql"
-	@service postgresql start >/dev/null 2>&1 || sudo service postgresql start
-	@echo "[start-web] starting redis-server"
-	@service redis-server start >/dev/null 2>&1 || sudo service redis-server start
-	@echo "[start-web] checking docker"
-	@if command -v docker >/dev/null 2>&1; then \
-		docker info >/dev/null 2>&1 && echo "docker: ok" || echo "docker: daemon not running (ok in web env until used)"; \
+start-web: ## Start Postgres + Redis (cloud: system services; local: compose)
+	@if [ "$${CLAUDE_CODE_REMOTE:-}" = "true" ]; then \
+		echo "[start-web] cloud mode — starting system services"; \
+		service postgresql start >/dev/null 2>&1 || sudo service postgresql start; \
+		service redis-server start >/dev/null 2>&1 || sudo service redis-server start; \
+	elif command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then \
+		echo "[start-web] local mode — docker compose up -d postgres redis"; \
+		docker compose up -d postgres redis; \
 	else \
-		echo "docker: not installed (skip)"; \
+		echo "[start-web] no docker — falling back to system services"; \
+		service postgresql start >/dev/null 2>&1 || sudo service postgresql start; \
+		service redis-server start >/dev/null 2>&1 || sudo service redis-server start; \
 	fi
 	@$(MAKE) doctor-web
 
-stop-web: ## Stop Postgres and Redis
-	@service postgresql stop >/dev/null 2>&1 || sudo service postgresql stop
-	@service redis-server stop >/dev/null 2>&1 || sudo service redis-server stop
+stop-web: ## Stop Postgres + Redis (cloud: system services; local: compose)
+	@if [ "$${CLAUDE_CODE_REMOTE:-}" = "true" ]; then \
+		service postgresql stop >/dev/null 2>&1 || sudo service postgresql stop; \
+		service redis-server stop >/dev/null 2>&1 || sudo service redis-server stop; \
+	elif command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then \
+		docker compose down; \
+	else \
+		service postgresql stop >/dev/null 2>&1 || sudo service postgresql stop; \
+		service redis-server stop >/dev/null 2>&1 || sudo service redis-server stop; \
+	fi
+
+observe-up: ## Start OTEL collector + Prometheus + Grafana (compose profile)
+	@docker compose --profile observe up -d
+
+observe-down: ## Stop observability stack
+	@docker compose --profile observe down
 
 # ----------------------------------------------------------------------
 # lint-web — static checks over the repo.
@@ -103,16 +119,30 @@ test-web: ## Smoke test: serve index.html and fetch it
 
 # ----------------------------------------------------------------------
 # doctor-web — are we healthy?
+# Set DOCTOR_INCLUDE_GHE=1 to also exercise the GHE audit-log probe
+# (requires admin:org / read:audit_log scope on GH_TOKEN).
 # ----------------------------------------------------------------------
-doctor-web: ## Health check: services running, tools installed
+doctor-web: ## Health check: services, tools, enterprise auth
+	@echo "[doctor-web] mode"
+	@if [ "$${CLAUDE_CODE_REMOTE:-}" = "true" ]; then echo "  cloud"; else echo "  local"; fi
 	@echo "[doctor-web] pg_isready"
-	@pg_isready 2>&1 | sed 's/^/  /'
+	@pg_isready -h localhost -p 5432 2>&1 | sed 's/^/  /'
 	@echo "[doctor-web] redis-cli ping"
-	@redis-cli ping 2>&1 | sed 's/^/  /'
+	@redis-cli -h localhost -p 6379 ping 2>&1 | sed 's/^/  /'
 	@echo "[doctor-web] gh installed?"
 	@command -v gh >/dev/null 2>&1 && gh --version | head -1 | sed 's/^/  /' || echo "  gh: not installed"
-	@echo "[doctor-web] gh authenticated?"
-	@gh auth status >/dev/null 2>&1 && echo "  ok" || echo "  not authenticated (set GH_TOKEN)"
+	@echo "[doctor-web] gh authenticated? (D6)"
+	@gh auth status >/dev/null 2>&1 && echo "  ok" || echo "  WARN: not authenticated — run /web-setup (cloud) or 'gh auth login' (local)"
+	@echo "[doctor-web] CLAUDE_CODE_OAUTH_TOKEN present? (D4)"
+	@if [ -n "$${CLAUDE_CODE_OAUTH_TOKEN:-}" ]; then echo "  ok (env)"; \
+	elif command -v claude >/dev/null 2>&1 && claude config get authToken >/dev/null 2>&1; then echo "  ok (keychain via /login)"; \
+	else echo "  WARN: no OAuth token — run /install-github-app then /web-setup"; fi
+	@echo "[doctor-web] ANTHROPIC_API_KEY absent from committed files? (D4)"
+	@if git grep -l ANTHROPIC_API_KEY -- ':!.claude/plans/' ':!src/web/prompt-evals/decisions/' ':!src/web/wellarchitected/' ':!src/web/enterprise/' >/dev/null 2>&1; then \
+		echo "  FAIL: ANTHROPIC_API_KEY found in committed file — review and remove"; \
+	else echo "  ok"; fi
+	@echo "[doctor-web] pin coverage"
+	@python3 -c "import json; d=json.load(open('src/web/dependencies/upstream-hashes.json')); print('  tracked:', len(d['pages']))"
 	@echo "[doctor-web] claude --version"
 	@command -v claude >/dev/null 2>&1 && claude --version | sed 's/^/  /' || echo "  claude: not on PATH"
 	@echo "[doctor-web] session URL"
@@ -120,6 +150,12 @@ doctor-web: ## Health check: services running, tools installed
 		echo "  https://claude.ai/code/$${CLAUDE_CODE_REMOTE_SESSION_ID}"; \
 	else \
 		echo "  (not in a cloud session — CLAUDE_CODE_REMOTE_SESSION_ID unset)"; \
+	fi
+	@if [ "$${DOCTOR_INCLUDE_GHE:-}" = "1" ]; then \
+		echo "[doctor-web] GHE audit-log reachable? (D7)"; \
+		gh api graphql -f query='{ organization(login:"agentbloggers") { auditLog(first:1) { nodes { ... on AuditEntry { action } } } } }' >/dev/null 2>&1 \
+			&& echo "  ok — SSO-authorized PAT" \
+			|| echo "  WARN: GHE audit-log probe failed (SSO not authorized, or GH_TOKEN lacks admin:org)"; \
 	fi
 
 # ----------------------------------------------------------------------

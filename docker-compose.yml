@@ -1,0 +1,100 @@
+# docker-compose.yml — Phase C data plane.
+#
+# Base services: postgres + redis. Always-on in local-dev; in cloud
+# sessions the system services (`service postgresql start`,
+# `service redis-server start`) typically cover the same role, but
+# compose is the portable fallback.
+#
+# Observe profile: otel-collector + prometheus + grafana.
+# Opt in with `docker compose --profile observe up -d`.
+#
+# Schema versions pinned against src/web/dependencies/manifest.yaml
+# (Postgres 16.x, Redis 7.4) so drift in our compose file is caught
+# by the same audit surface that catches doc drift.
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: agentdatamodels-postgres
+    environment:
+      POSTGRES_USER: claude
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-claude-dev}
+      POSTGRES_DB: claude
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./sql/bootstrap.sql:/docker-entrypoint-initdb.d/00-bootstrap.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U claude -d claude"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  redis:
+    image: redis:7.4
+    container_name: agentdatamodels-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: ["redis-server", "--appendonly", "yes"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+    restart: unless-stopped
+
+  otel-collector:
+    profiles: ["observe"]
+    image: otel/opentelemetry-collector-contrib:0.112.0
+    container_name: agentdatamodels-otel
+    command: ["--config=/etc/otel-collector.yaml"]
+    volumes:
+      - ./ops/otel-collector.yaml:/etc/otel-collector.yaml:ro
+    ports:
+      - "4317:4317"   # OTLP gRPC
+      - "4318:4318"   # OTLP HTTP
+      - "8889:8889"   # Prometheus scrape target
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  prometheus:
+    profiles: ["observe"]
+    image: prom/prometheus:v2.54.1
+    container_name: agentdatamodels-prometheus
+    volumes:
+      - ./ops/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+    depends_on:
+      - otel-collector
+    restart: unless-stopped
+
+  grafana:
+    profiles: ["observe"]
+    image: grafana/grafana:11.3.0
+    container_name: agentdatamodels-grafana
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: "Viewer"
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-claude-dev}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./ops/grafana-provisioning:/etc/grafana/provisioning:ro
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+  prometheus_data:
+  grafana_data:

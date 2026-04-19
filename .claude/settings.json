@@ -31,6 +31,12 @@
         "matcher": "startup|resume",
         "hooks": [
           {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/scripts/bootstrap-services.sh",
+            "timeout": 30,
+            "statusMessage": "Starting Postgres + Redis data plane..."
+          },
+          {
             "type": "agent",
             "prompt": "Run every eval under $CLAUDE_PROJECT_DIR/src/web/prompt-evals/decisions/*.eval.md. For each file, follow its Check + Scorer + Skip sections exactly. Return one line of JSON per eval: {\"id\":\"D<N>\",\"ok\":bool,\"reason\":str}. Never mutate files in src/web/, .claude/, or the repo root — these evals are read-only. Session continues regardless of results; this is advisory.",
             "timeout": 120

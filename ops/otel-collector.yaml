@@ -1,0 +1,43 @@
+# ops/otel-collector.yaml — Phase C.7 minimal collector.
+#
+# Receives OTLP from `claude -p` with CLAUDE_CODE_ENABLE_TELEMETRY=1
+# (per monitoring-usage.md); fans out metrics to Prometheus and
+# tool-result logs to Postgres (via insert-ready structured output).
+#
+# Intentionally minimal — no batching/sampling until we have volume
+# to justify tuning.
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch:
+    timeout: 5s
+  resource/repo:
+    attributes:
+      - key: repo.name
+        value: agentdatamodels
+        action: upsert
+
+exporters:
+  prometheus:
+    endpoint: 0.0.0.0:8889
+    namespace: claude_code
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    metrics:
+      receivers: [otlp]
+      processors: [batch, resource/repo]
+      exporters: [prometheus]
+    logs:
+      receivers: [otlp]
+      processors: [batch, resource/repo]
+      exporters: [debug]
