@@ -75,6 +75,34 @@ preview unless noted — behavior and flags can change.
 | `compact-2026-01-12` | Server-side compaction |
 | `task-budgets-2026-03-13` | Opus 4.7 task budgets |
 
+## GitHub Well-Architected Q1 2026
+
+| Source | Covers | Status |
+|---|---|---|
+| `wellarchitected.github.com/library/architecture/recommendations/implementing-polyrepo-engineering/` | 8-step polyrepo plan, coordination models, orchestrator/executor pattern | Q1 2026; snapshot pending |
+| `wellarchitected.github.com/library/application-security/recommendations/managing-dependency-threats/` | 6-layer defense model; `.npmrc`, Dependabot, attestations, `npm audit signatures` | Q1 2026; snapshot pending |
+| `wellarchitected.github.com/library/architecture/recommendations/expanding-enterprise-custom-agents-context/` | 30k-char limit, `.github-private/knowledge/` layout, MCP `get_file_contents`, `COPILOT_MCP_GITHUB_PERSONAL_ACCESS_TOKEN` | Q1 2026; snapshot pending |
+| `wellarchitected.github.com/library/scenarios/nist-ssdf-implementation/` | SSDF PO/PS/PW/RV practice groups mapped to GitHub features | Q1 2026 (updated); snapshot pending |
+| `wellarchitected.github.com/library/application-security/recommendations/actions-security/` | 14 Actions security practices; OIDC, SHA pinning, `permissions: {}`, `pull_request_target`, `workflow_run` | Q1 2026 (updated); snapshot pending |
+| `wellarchitected.github.com/library/application-security/design-principles/` | 5 principles: Design for Security/Compliance/Proactivity/Awareness, Keep it Simple | Q1 2026 (updated); snapshot pending |
+| `wellarchitected.github.com/library/scenarios/anti-patterns/` | 13 anti-patterns across 7 categories; "Neglecting Application Security Measures" umbrella | Q1 2026 (updated); snapshot pending |
+
+Version floor for all WA entries: Q1 2026 release
+(`wellarchitected.github.com/library/overview/release-notes/#2026-q1`).
+All pages tracked in `src/web/dependencies/manifest.yaml` under `pages:[]`
+with `sha256: null` — snapshots not yet written; D-eval `wa_provenance`
+fields are the interim citation source.
+
+Downstream files:
+- `src/web/wellarchitected/polyrepo-engineering.md`
+- `src/web/wellarchitected/polyrepo-changesets.md`
+- `src/web/wellarchitected/managing-dependency-threats.md`
+- `src/web/wellarchitected/expanding-enterprise-custom-agents-context.md`
+- `src/web/wellarchitected/nist-ssdf-implementation.md`
+- `src/web/wellarchitected/actions-security.md`
+- `src/web/wellarchitected/design-principles.md`
+- `src/web/wellarchitected/anti-patterns.md`
+
 ## When to refetch
 
 Refetch the source when:

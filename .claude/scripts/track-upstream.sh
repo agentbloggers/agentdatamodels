@@ -66,22 +66,35 @@ while IFS= read -r url; do
   new_sha=$(sha256sum "$tmp" | awk '{print $1}')
   prev=$(echo "$current_hashes" | awk -F'\t' -v u="$url" '$1==u {print $2}')
 
+  # Derive the snapshot path up-front — used whether NEW or CHANGED.
+  # Slug: last URL segment, strip trailing .md, replace non-alnum.
+  # Trailing slashes are dropped so .../implementing-polyrepo-engineering/
+  # and .../implementing-polyrepo-engineering both slug to the same thing.
+  slug=$(echo "$url" | sed 's|/$||; s|.*/||; s|\.md$||; s|[^a-zA-Z0-9._-]|-|g')
+  [ -z "$slug" ] && slug="index"
+  snap_dir="src/web/dependencies/snapshots"
+  date_tag=$(date -u +%Y-%m-%d)
+  snap_path="$snap_dir/${slug}-${date_tag}.md"
+
   if [ -z "$prev" ]; then
     status="NEW"
     new=$((new+1))
+    mkdir -p "$snap_dir"
+    cp "$tmp" "$snap_path"
   elif [ "$prev" = "$new_sha" ]; then
     status="unchanged"
     unchanged=$((unchanged+1))
+    # Touch a snapshot if the file is missing (e.g. cleared snapshots dir);
+    # keeps on-disk backing consistent with upstream-hashes.json.
+    if [ ! -f "$snap_path" ]; then
+      mkdir -p "$snap_dir"
+      cp "$tmp" "$snap_path"
+    fi
   else
     status="**CHANGED**"
     changed=$((changed+1))
-    # Snapshot the new content
-    slug=$(echo "$url" | sed 's|.*/||; s|\.md$||; s|[^a-zA-Z0-9._-]|-|g')
-    snap_dir="src/web/tools/snapshots"
-    # Try to use the downstream file's directory for snapshot location
     mkdir -p "$snap_dir"
-    date_tag=$(date -u +%Y-%m-%d)
-    cp "$tmp" "$snap_dir/${slug}-${date_tag}.md"
+    cp "$tmp" "$snap_path"
   fi
 
   echo "| $url | ${prev:-(none)} | $new_sha | $status |" >> "$RUN_FILE"
