@@ -18,7 +18,13 @@
 pinned_cli: "@anthropic-ai/claude-code@2.1.114"
 pinned_agent_sdk_floor: "@anthropic-ai/claude-agent-sdk@0.2.111"
 pinned_anthropic_sdk_ts: "@anthropic-ai/sdk@0.90.0"
-pinned_node: ">=18"
+pinned_node: ">=20"   # raised from 18 → 20 for @octokit/graphql@9.x
+pinned_octokit_graphql: "@octokit/graphql@9.0.3"
+pinned_octokit_paginate_graphql: "@octokit/plugin-paginate-graphql@6.0.0"
+pinned_octokit_graphql_schema: "@octokit/graphql-schema@15.26.1"
+pinned_markdown_it: "markdown-it@14.1.1"
+pinned_markdown_it_anchor: "markdown-it-anchor@9.2.0"
+pinned_markdown_it_front_matter: "markdown-it-front-matter@0.2.4"
 
 orgs:
   anthropics:
@@ -91,6 +97,72 @@ orgs:
     url: https://github.com/AndonLabs
     watched_repos: []
     reason: "watch-only: eval + scaffold research"
+
+  graphql:
+    type: github-org
+    url: https://github.com/orgs/graphql/repositories
+    watched_repos:
+      - { name: graphql-spec,  pin: main, reason: "canonical GraphQL spec" }
+      - { name: graphql-js,    pin: latest, reason: "reference JS implementation" }
+    reason: "GraphQL Foundation — canonical spec + reference impls"
+
+  octokit:
+    type: github-org
+    url: https://github.com/orgs/octokit/repositories
+    watched_repos:
+      - { name: graphql.js,                    pin: v9.0.3,  reason: "JS GraphQL client — pinned to package.json" }
+      - { name: plugin-paginate-graphql.js,    pin: v6.0.0,  reason: "paginate plugin — pinned to package.json" }
+      - { name: graphql-schema,                pin: v15.26.1, reason: "GitHub GraphQL schema + validation — pinned" }
+      - { name: graphql-action,                pin: latest,  reason: "GH Actions workflow step for GraphQL" }
+      - { name: octokit.js,                    pin: latest,  reason: "umbrella client; reference for our standalone usage" }
+      - { name: rest.js,                       pin: latest,  reason: "REST client — reference for when GraphQL isn't right" }
+    reason: "Official GitHub-maintained client libs"
+
+  markdown-it:
+    type: github-org
+    url: https://github.com/markdown-it
+    watched_repos:
+      - { name: markdown-it,                  pin: v14.1.1, reason: "pinned to package.json" }
+      - { name: markdown-it-anchor,           pin: v9.2.0,  reason: "pinned to package.json" }
+      - { name: markdown-it-front-matter,     pin: v0.2.4,  reason: "pinned to package.json" }
+    reason: "Markdown parser we use in docs-librarian regeneration"
+
+wellarchitected:
+  source: https://wellarchitected.github.com/library/
+  references:
+    - https://wellarchitected.github.com/library/overview/layers/
+    - https://wellarchitected.github.com/library/overview/getting-started-checklist/
+    - https://wellarchitected.github.com/library/architecture/recommendations/implementing-polyrepo-engineering/
+  status: "documented, not yet implemented — polyrepo deferred per user until device surfaces settle"
+
+neon:
+  source: https://neon.com/guides/isolated-subagents-neon-branching
+  status: "documented, not yet provisioned — requires NEON_API_KEY + NEON_PROJECT_ID"
+  postgres_target: 17   # bump to 18 once Neon ships PG 18 support
+
+cloudflare_domains:
+  owner_status: "20 domains registered to the user's Cloudflare account; all currently empty"
+  examples:
+    - agentchangelogs.com
+    - agentcoauthors.com
+    - agentcrawls.com
+    - agentdatamodels.com     # this repo
+    - agentdatawarehouses.com
+    - agentdiagrams.com
+    - agentiwikis.com
+    - agentknowledgeworkers.com
+    - agentloggers.com
+    - agentportfolios.com
+    - agentpublishers.com
+    - agentreaders.com
+    - agentregistrations.com
+    - agentsubdomains.com
+    - agentsubtasks.com
+    - agentsystemcards.com
+    - agenttables.com
+    - agenttodos.com
+    - agenttrademarks.com
+  status: "reserved as future polyrepo targets; do not provision yet"
 
 external_catalogs:
   - name: anthropic-skills-site

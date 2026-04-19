@@ -1,0 +1,26 @@
+# Enumerate repos in an org with pagination.
+# Cost: 1 point + 1 per 100 nodes. Paginate with after: $cursor.
+query OrgReposList($login: String!, $cursor: String) {
+  organization(login: $login) {
+    repositories(first: 100, after: $cursor, orderBy: {field: UPDATED_AT, direction: DESC}) {
+      nodes {
+        name
+        nameWithOwner
+        isArchived
+        isFork
+        primaryLanguage { name }
+        latestRelease { tagName publishedAt }
+        defaultBranchRef {
+          target {
+            ... on Commit { oid committedDate }
+          }
+        }
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+  rateLimit { cost remaining }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "agentdatamodels",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Workshop for developers building workflows that drive the claude-code CLI from outside the terminal.",
+  "homepage": "https://agentdatamodels.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agentbloggers/agentdatamodels"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "type": "module",
+  "scripts": {
+    "lint": "make lint-web",
+    "test": "make test-web",
+    "graphql": "make graphql-web"
+  },
+  "dependencies": {
+    "@octokit/graphql": "9.0.3",
+    "@octokit/plugin-paginate-graphql": "6.0.0",
+    "@octokit/graphql-schema": "15.26.1",
+    "markdown-it": "14.1.1",
+    "markdown-it-anchor": "9.2.0",
+    "markdown-it-front-matter": "0.2.4"
+  },
+  "devDependencies": {}
+}

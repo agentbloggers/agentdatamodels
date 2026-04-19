@@ -23,12 +23,21 @@ bootstrap-web: ## Install system deps (gh, etc), start services, auth gh
 	@$(MAKE) start-web
 
 # ----------------------------------------------------------------------
-# install-web — project-level deps (none today; reserved for when we add
-# package.json or requirements.txt).
+# install-web — project-level deps.
+# Installs:
+#   - npm deps from package.json (@octokit/graphql, markdown-it, …)
+#   - Python deps (pyyaml) needed by .claude/scripts/*
+# Idempotent. Safe to re-run.
 # ----------------------------------------------------------------------
-install-web: ## Install project-level deps (npm, pip, etc)
-	@echo "[install-web] nothing to install — this is a static site"
-	@# Future: npm ci / pip install -r requirements.txt / etc.
+install-web: ## Install project-level deps (npm ci + pip)
+	@if [ -f package.json ]; then \
+		echo "[install-web] npm ci (package.json present)"; \
+		if [ -f package-lock.json ]; then npm ci; else npm install; fi; \
+	else \
+		echo "[install-web] no package.json — skipping npm"; \
+	fi
+	@echo "[install-web] pyyaml for dep scripts"
+	@python3 -c 'import yaml' 2>/dev/null || python3 -m pip install --quiet pyyaml
 
 # ----------------------------------------------------------------------
 # start-web — start Postgres + Redis + Docker-backed services.

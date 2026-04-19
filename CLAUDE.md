@@ -49,6 +49,11 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/claude-dir.md` — `.claude/` layout + cloud visibility
 - `src/web/dependencies/` — upstream manifest + `make graphql-web` control plane
 - `src/web/tools/` — canonical built-in tool names (hash-gated to `tools-reference`)
+- `src/web/graphql/` — GitHub GraphQL primitives + reusable queries
+- `src/web/markdown/` — `markdown-it` architecture + our usage
+- `src/web/neon/` — Neon per-subagent DB branching
+- `src/web/wellarchitected/` — GitHub Well-Architected framework (polyrepo deferred)
+- `src/web/enterprise/` — Claude Code Max OAuth, GH Enterprise, HF premium, Cloudflare
 - `src/web/references.md` — external canon (cookbooks, skills repo, npm, SDKs)
 - `src/web/sources.md` — provenance for every claim above
 
