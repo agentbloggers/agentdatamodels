@@ -329,7 +329,9 @@ pages:
       - src/web/enterprise/README.md
 
   # GitHub Enterprise docs — live on docs.github.com.
-  - url: https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/about-authentication-for-your-enterprise
+  # NOTE: 2026-04-19 — corrected from .../about-authentication-for-your-enterprise
+  # (404) to the parent overview page after probing.
+  - url: https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises
     snapshot: null
     sha256: null
     last_seen: null
@@ -415,3 +417,72 @@ pages:
     last_seen: null
     downstream:
       - src/web/wellarchitected/anti-patterns.md
+
+  # CLI-reference pages flagged 2026-04-19 for the Redis cache
+  # strategy work in plan Phase C.7. Sidecar mapping with title +
+  # html_url lives at src/web/dependencies/cli-reference-pages.json
+  # and is the source of truth for cache-key shape design.
+  - url: https://code.claude.com/docs/en/cli-reference.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+
+  - url: https://code.claude.com/docs/en/commands.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+
+  - url: https://code.claude.com/docs/en/env-vars.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+      - src/web/enterprise/README.md
+
+  - url: https://code.claude.com/docs/en/tools-reference.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/tools/README.md
+
+  - url: https://code.claude.com/docs/en/interactive-mode.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+
+  - url: https://code.claude.com/docs/en/checkpointing.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+
+  - url: https://code.claude.com/docs/en/hooks.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/primitives.md
+      - .claude/settings.json
+
+  - url: https://code.claude.com/docs/en/plugins-reference.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/plugins.md
+
+  - url: https://code.claude.com/docs/en/channels-reference.md
+    snapshot: null
+    sha256: null
+    last_seen: null
+    downstream:
+      - src/web/channels.md

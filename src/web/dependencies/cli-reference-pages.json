@@ -1,0 +1,48 @@
+{
+  "_purpose": "CLI-reference doc URLs flagged by user 2026-04-19 for the Redis cache strategy work in plan Phase C.7. Pinned in manifest.yaml so make graphql-web tracks drift; this sidecar preserves the original {url: [title, html_url]} mapping for cache-key shape design.",
+  "_redis_cache_design_notes": [
+    "Cache key candidate: sha1(url) — 40 hex chars, fits Redis token format",
+    "Cache value: {title, html_url, sha256, snapshot_path, last_seen, ttl_until}",
+    "TTL: 24h or last_seen + 24h, whichever is later",
+    "Invalidation: make graphql-web bumps last_seen and re-publishes; Redis SET on every successful fetch",
+    "Per WA Managing Dependency Threats: cache MUST NOT bypass the sha256 drift check — Redis is a read-through, hash check is authoritative"
+  ],
+  "pages": {
+    "https://code.claude.com/docs/en/cli-reference.md": {
+      "title": "CLI reference",
+      "html_url": "https://code.claude.com/docs/en/cli-reference"
+    },
+    "https://code.claude.com/docs/en/commands.md": {
+      "title": "Commands",
+      "html_url": "https://code.claude.com/docs/en/commands"
+    },
+    "https://code.claude.com/docs/en/env-vars.md": {
+      "title": "Environment variables",
+      "html_url": "https://code.claude.com/docs/en/env-vars"
+    },
+    "https://code.claude.com/docs/en/tools-reference.md": {
+      "title": "Tools reference",
+      "html_url": "https://code.claude.com/docs/en/tools-reference"
+    },
+    "https://code.claude.com/docs/en/interactive-mode.md": {
+      "title": "Interactive mode",
+      "html_url": "https://code.claude.com/docs/en/interactive-mode"
+    },
+    "https://code.claude.com/docs/en/checkpointing.md": {
+      "title": "Checkpointing",
+      "html_url": "https://code.claude.com/docs/en/checkpointing"
+    },
+    "https://code.claude.com/docs/en/hooks.md": {
+      "title": "Hooks reference",
+      "html_url": "https://code.claude.com/docs/en/hooks"
+    },
+    "https://code.claude.com/docs/en/plugins-reference.md": {
+      "title": "Plugins reference",
+      "html_url": "https://code.claude.com/docs/en/plugins-reference"
+    },
+    "https://code.claude.com/docs/en/channels-reference.md": {
+      "title": "Channels reference",
+      "html_url": "https://code.claude.com/docs/en/channels-reference"
+    }
+  }
+}

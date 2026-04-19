@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "updated_at": "2026-04-19T18:47:02Z",
+  "updated_at": "2026-04-19T19:23:51Z",
   "pages": {
     "https://code.claude.com/docs/en/tools-reference.md": {
       "sha256": "a1391bf8d8abe12499319a782b15695a8014b206c7e75adf9d8cafda937d8f21",
@@ -99,11 +99,6 @@
       "last_seen": "2026-04-19",
       "first_seen": "2026-04-19"
     },
-    "https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises/about-authentication-for-your-enterprise": {
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-      "last_seen": "2026-04-19",
-      "first_seen": "2026-04-19"
-    },
     "https://docs.github.com/en/enterprise-cloud@latest/rest/orgs/security-managers": {
       "sha256": "b1d9178e640a98c3e2e5b9f6d04753bf67ce211c13627787d9abfec021a20bc3",
       "last_seen": "2026-04-19",
@@ -151,6 +146,51 @@
     },
     "https://wellarchitected.github.com/library/scenarios/anti-patterns/": {
       "sha256": "7e97debd0a8d93e41b1659940948cdb34d942d2ac58c6f2f211af80f12799a49",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/cli-reference.md": {
+      "sha256": "dfc9c7a564349fe19d4fef8b5a0b812a23320e7c01b05813ef430b2246149b2c",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/commands.md": {
+      "sha256": "9824f35f01da74572a138474c179426ba020401745d1bb4530de52e0c2bd967f",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/env-vars.md": {
+      "sha256": "4f5abdc18396624380ee0d6637a4fb064e57e95936d38a2d5a8a664b1b45f6f8",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/interactive-mode.md": {
+      "sha256": "fe95f0f2f26f4d07e17157e91f9655278863544a87346134f3c514de9416c684",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/checkpointing.md": {
+      "sha256": "94f7cd24eb795c68743834b79edf4e0ea6ea10ac84a26788fcafc466a85b63ce",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/hooks.md": {
+      "sha256": "124344dc4896d480638c4ce20c7e77be5d68b2afc0c5150ed0dfe6388709754a",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/plugins-reference.md": {
+      "sha256": "9f17437c4bb44b403c7fe5867cf44011291a7c506e2c542e53197b209e14e77f",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://code.claude.com/docs/en/channels-reference.md": {
+      "sha256": "ab6a103c8d063e57be0da23c759cfbfc8d773290ac85880a01723b69921de81e",
+      "last_seen": "2026-04-19",
+      "first_seen": "2026-04-19"
+    },
+    "https://docs.github.com/en/enterprise-cloud@latest/admin/managing-iam/understanding-iam-for-enterprises": {
+      "sha256": "f1c9666a37d70f6391d7799a860eac0b7c49d5fc126811f630e54e60356be337",
       "last_seen": "2026-04-19",
       "first_seen": "2026-04-19"
     }
