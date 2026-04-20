@@ -2,7 +2,7 @@
 name: seed-prompt-keeper
 description: Use when adding, updating, or reviewing files under .claude/seed-prompts/. Seed prompts are canonical example prompts from real user sessions that serve as both eval inputs and onboarding references. Proactively invoke this subagent at the end of any session where the user asked Claude to do something reusable.
 tools: Read, Glob, Grep, Edit, Write
-model: haiku
+model: sonnet
 memory: project
 color: cyan
 ---
