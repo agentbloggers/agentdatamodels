@@ -29,6 +29,8 @@ Pinned upstream versions live in `src/web/dependencies/manifest.yaml`.
 - `make doctor-web` — health check (services, gh auth, CLI version, session URL)
 - `make build-web` — no-op for now (static site)
 - `make graphql-web` — hash-check tracked docs + GraphQL-query pinned repos
+- `make flow-news` — fetch both claude-code CHANGELOG sources + compute delta
+- `make flow-run SPEC=…` — full CEE loop for one Gemmah video spec
 
 Bootstrap is only needed in a cloud session — locally you probably
 already have everything.
@@ -56,6 +58,8 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/enterprise/` — Claude Code Max OAuth, GH Enterprise, HF premium, Cloudflare
 - `src/web/references.md` — external canon (cookbooks, skills repo, npm, SDKs)
 - `src/web/sources.md` — provenance for every claim above
+- `src/flow/` — Gemmah video pipeline (Veo 3.1 + Nano Banana); CEE loop
+  over `claude-code` CHANGELOG deltas, outputs to Google Drive
 
 ## Non-terminal entry points we care about
 
