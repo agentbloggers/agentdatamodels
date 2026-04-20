@@ -56,6 +56,8 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/enterprise/` — Claude Code Max OAuth, GH Enterprise, HF premium, Cloudflare
 - `src/web/references.md` — external canon (cookbooks, skills repo, npm, SDKs)
 - `src/web/sources.md` — provenance for every claim above
+- `src/live/README.md` — realtime voice / video / avatar surfaces (Gemini Live, Anam, HeyGen)
+- `src/live/voice-chat/` — runnable browser demo: mic → Gemini Live → code-execute-evaluate loop → optional avatar
 
 ## Non-terminal entry points we care about
 
