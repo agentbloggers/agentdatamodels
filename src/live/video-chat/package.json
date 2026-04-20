@@ -1,0 +1,12 @@
+{
+  "name": "video-chat",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Gemini Live × Anam/HeyGen video chat demo.",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check client.js && node --check avatar.js && node --check main.js && node --check config.js"
+  },
+  "engines": { "node": ">=20" }
+}
