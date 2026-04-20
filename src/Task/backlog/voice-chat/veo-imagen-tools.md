@@ -13,8 +13,11 @@ clip" and have an actual video show up next to the avatar would be
 a compelling demo, and Veo 3.1 Fast brings the latency/cost inside
 the range where it's tolerable during a live turn.
 
-`google-genai-api` (npm) wraps Gemini + Veo 3.1 + Imagen 4 in one
-package, so we don't need three integrations.
+`@google/genai` (npm) — the same official SDK already used by
+`src/live/voice-chat/gemini-live.md` — covers Gemini + Veo 3.1 +
+Imagen 4 + Nano Banana in one package, so we don't need three
+integrations. Reference card with exact model IDs, pricing, and
+minimal snippets lives at `src/live/voice-chat/veo-imagen.md`.
 
 ## scope
 
