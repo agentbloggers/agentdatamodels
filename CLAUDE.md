@@ -29,6 +29,8 @@ Pinned upstream versions live in `src/web/dependencies/manifest.yaml`.
 - `make doctor-web` — health check (services, gh auth, CLI version, session URL)
 - `make build-web` — no-op for now (static site)
 - `make graphql-web` — hash-check tracked docs + GraphQL-query pinned repos
+- `make dev-voice-chat` — serve `src/live/voice-chat/` on :5173 (needs `GEMINI_API_KEY`)
+- `make eval-voice-chat` — fast regression eval over the voice-chat loop contract
 
 Bootstrap is only needed in a cloud session — locally you probably
 already have everything.

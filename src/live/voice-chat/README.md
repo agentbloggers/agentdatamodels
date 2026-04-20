@@ -18,22 +18,38 @@ Source of truth for the loop contract is
 ## Run locally
 
 ```bash
-cd src/live/voice-chat
-GEMINI_API_KEY=… node server.mjs        # serves index.html + /api/ephemeral-token
-open http://localhost:5173
+export GEMINI_API_KEY=…                # required
+export ANTHROPIC_API_KEY=…             # optional — unlocks ask_claude + judge
+make dev-voice-chat                    # serves index.html + /api/* on :5173
+# → open http://localhost:5173 → click "● start session" → grant mic → speak
 ```
 
 The demo refuses to start if `GEMINI_API_KEY` is unset — keys never
-ship in the static bundle.
+ship in the static bundle. Everything else degrades gracefully per
+the matrix below.
 
-Optional avatar providers are off by default. Set:
+### Graceful degradation
+
+| Env var absent | What fails | What still works |
+|---|---|---|
+| `GEMINI_API_KEY` | Whole session — `/api/gemini-token` → 500 | Static page loads; error is visible in the turn log |
+| `ANTHROPIC_API_KEY` | `ask_claude` + the judge step of the loop | Gemini audio + `run_js` + `run_sql` + `fetch_doc` |
+| `PG_URL` | `run_sql` returns 501 | All other tools |
+| `ANAM_API_KEY` / `ANAM_PERSONA_ID` | Anam avatar disabled | Audio-only + HeyGen option |
+| `HEYGEN_API_KEY` | HeyGen avatar disabled | Audio-only + Anam option |
+
+### Regression eval
 
 ```bash
-ANAM_API_KEY=…        # for /api/anam-token
-HEYGEN_API_KEY=…      # for /api/heygen-token
+make eval-voice-chat        # also runs inside `make test-web`
 ```
 
-and pick a provider from the page's `AVATAR` dropdown.
+Parses `app.js` for tool-registry parity (every `TOOL_DECLARATION`
+has an executor and vice-versa), checks FunctionDeclaration shape,
+then boots `server.mjs` with no env vars and asserts the refusal /
+allowlist contracts (`/api/gemini-token` → 500, disallowed host →
+403, allowed host reaches upstream, …). Finishes in ~1 second.
+See `eval.mjs` for the full matrix.
 
 ## Architecture in one picture
 
