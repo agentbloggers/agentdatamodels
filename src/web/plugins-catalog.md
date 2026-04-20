@@ -48,6 +48,15 @@ fill lives at `.claude-plugins/docs-lsp/` — see
 | `commit-commands` | `/commit`, `/commit-push-pr`, `/clean_gone` | ✅ |
 | `code-review` | Parallel-agent PR review with confidence scoring | ✅ |
 | `pr-review-toolkit` | Six specialized PR reviewers (types, comments, silent failures, etc.) | ✅ |
+| `claude-md-management` | Detects CLAUDE.md bloat, dead references, paid-every-turn waste | ✅ |
+| `plugin-dev` | Scaffolds and tests plugins in this repo | ✅ |
+| `agent-sdk-dev` | Dev toolkit for `@anthropic-ai/claude-agent-sdk` workflows | ✅ |
+| `mcp-server-dev` | Scaffold, test, and publish MCP servers | ✅ |
+| `skill-creator` | Author and validate new skills without leaving the session | ✅ |
+| `hookify` | Turns directives into enforced hooks (SessionStart / PreToolUse / PostToolUse / Stop) | ✅ |
+| `claude-code-setup` | Bootstrap and health-check new Claude Code projects; complements `make doctor-web` | ✅ |
+| `ralph-loop` | Cloud analogue of `/loop` — recurring prompts from cloud sessions and Routines | ✅ |
+| `session-report` | Explorable HTML report of a session — tokens, cache efficiency, subagents, skills | ✅ |
 
 ## Integrations (MCP connectors)
 
@@ -55,6 +64,7 @@ fill lives at `.claude-plugins/docs-lsp/` — see
 |---|---|---|
 | `github@claude-plugins-official` | GitHub MCP server (`mcp__github__*`) — PR / issue / code search / ruleset read | ✅ |
 | `figma@claude-plugins-official` | Figma MCP — read designs, extract assets | ✅ |
+| `playwright@claude-plugins-official` | Microsoft's Playwright MCP — browser automation and real DOM/JS testing of `index.html` | ✅ |
 | `slack@claude-plugins-official` | Slack MCP — read channel, send message, search | on-demand |
 | `linear@claude-plugins-official` | Linear MCP — issues, cycles, initiatives | on-demand |
 | `lucid@claude-plugins-official` | Lucidchart / Lucidspark MCP — create/edit diagrams | on-demand |
@@ -118,14 +128,24 @@ processes, and fire `type: "http"` hook callbacks.
 ```jsonc
 // .claude/settings.json → enabledPlugins
 {
-  "frontend-design@anthropics-claude-code": true,   // design handoff
-  "feature-dev@anthropics-claude-code":     true,   // 7-phase loop
-  "commit-commands@anthropics-claude-code": true,
-  "code-review@anthropics-claude-code":     true,
-  "pr-review-toolkit@anthropics-claude-code": true,
-  "github@claude-plugins-official":         true,   // org PR/issue/ruleset reads
-  "typescript-lsp@claude-plugins-official": true,   // TSX benchmark dashboard
-  "figma@claude-plugins-official":          true    // design drops
+  "frontend-design@anthropics-claude-code":    true,   // design handoff
+  "feature-dev@anthropics-claude-code":        true,   // 7-phase loop
+  "commit-commands@anthropics-claude-code":    true,
+  "code-review@anthropics-claude-code":        true,
+  "pr-review-toolkit@anthropics-claude-code":  true,
+  "claude-md-management@anthropics-claude-code": true, // CLAUDE.md hygiene
+  "plugin-dev@anthropics-claude-code":         true,   // plugin authoring
+  "agent-sdk-dev@anthropics-claude-code":      true,   // Agent SDK workflows
+  "mcp-server-dev@anthropics-claude-code":     true,   // MCP server authoring
+  "skill-creator@anthropics-claude-code":      true,   // skill authoring
+  "hookify@anthropics-claude-code":            true,   // enforce directives via hooks
+  "claude-code-setup@anthropics-claude-code":  true,   // project bootstrap/health
+  "ralph-loop@anthropics-claude-code":         true,   // cloud /loop analogue
+  "session-report@anthropics-claude-code":     true,   // session usage report
+  "github@claude-plugins-official":            true,   // org PR/issue/ruleset reads
+  "typescript-lsp@claude-plugins-official":    true,   // TSX benchmark dashboard
+  "figma@claude-plugins-official":             true,   // design drops
+  "playwright@claude-plugins-official":        true    // browser testing for index.html
 }
 ```
 
