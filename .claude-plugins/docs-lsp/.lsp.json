@@ -1,0 +1,47 @@
+{
+  "json": {
+    "command": "vscode-json-languageserver",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".json": "json",
+      ".jsonc": "jsonc"
+    },
+    "transport": "stdio",
+    "restartOnCrash": true,
+    "maxRestarts": 3
+  },
+  "yaml": {
+    "command": "yaml-language-server",
+    "args": ["--stdio"],
+    "extensionToLanguage": {
+      ".yaml": "yaml",
+      ".yml": "yaml"
+    },
+    "transport": "stdio",
+    "settings": {
+      "yaml": {
+        "schemas": {
+          "https://json.schemastore.org/github-workflow.json": "/.github/workflows/*.y*ml",
+          "https://json.schemastore.org/dependabot-2.0.json": "/.github/dependabot.y*ml",
+          "https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json": "/docker-compose*.y*ml"
+        },
+        "validate": true,
+        "hover": true,
+        "completion": true
+      }
+    },
+    "restartOnCrash": true,
+    "maxRestarts": 3
+  },
+  "markdown": {
+    "command": "marksman",
+    "args": ["server"],
+    "extensionToLanguage": {
+      ".md": "markdown",
+      ".markdown": "markdown"
+    },
+    "transport": "stdio",
+    "restartOnCrash": true,
+    "maxRestarts": 3
+  }
+}

@@ -1,0 +1,49 @@
+# Fetch PR + its reviews, commits, files, and check status in one round-trip.
+# Cost: ~3 points at default page sizes.
+# Use instead of the 4+ REST calls it would take.
+query PRFullThread($owner: String!, $repo: String!, $number: Int!) {
+  repository(owner: $owner, name: $repo) {
+    pullRequest(number: $number) {
+      number
+      title
+      body
+      state
+      isDraft
+      mergeable
+      author { login }
+      baseRefName
+      headRefName
+      reviewDecision
+      reviews(first: 50) {
+        nodes {
+          author { login }
+          state
+          body
+          submittedAt
+        }
+      }
+      commits(last: 50) {
+        nodes {
+          commit {
+            oid
+            message
+            author { name email }
+            statusCheckRollup { state }
+          }
+        }
+      }
+      files(first: 100) {
+        nodes {
+          path
+          additions
+          deletions
+          changeType
+        }
+      }
+      labels(first: 20) {
+        nodes { name color }
+      }
+    }
+  }
+  rateLimit { cost remaining }
+}
