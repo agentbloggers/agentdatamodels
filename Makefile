@@ -1,4 +1,4 @@
-.PHONY: help bootstrap-web install-web start-web stop-web lint-web fmt-web test-web doctor-web build-web graphql-web observe-up observe-down
+.PHONY: help bootstrap-web install-web start-web stop-web lint-web fmt-web test-web doctor-web build-web graphql-web observe-up observe-down dev-voice-chat eval-voice-chat
 
 # Default: show help
 help:
@@ -109,13 +109,32 @@ fmt-web: ## Format markdown + JSON (pretty-print)
 	done
 
 # ----------------------------------------------------------------------
-# test-web — currently: smoke test of browsing the static site.
+# test-web — smoke test of the static site + voice-chat eval.
 # ----------------------------------------------------------------------
-test-web: ## Smoke test: serve index.html and fetch it
+test-web: ## Smoke test: serve index.html, fetch it, run voice-chat eval
 	@echo "[test-web] serving index.html on :8080 for 2s"
 	@(python3 -m http.server 8080 >/dev/null 2>&1 & echo $$! > /tmp/httpd.pid; sleep 1; \
 		curl -sf http://localhost:8080/ >/dev/null && echo "  ok  index.html loads" || echo "  FAIL"; \
 		kill `cat /tmp/httpd.pid` 2>/dev/null; rm -f /tmp/httpd.pid)
+	@$(MAKE) eval-voice-chat
+
+# ----------------------------------------------------------------------
+# dev-voice-chat — run the src/live/voice-chat/ demo on :5173.
+# Requires GEMINI_API_KEY for the full loop; the page degrades
+# gracefully without ANTHROPIC_API_KEY / ANAM_API_KEY / HEYGEN_API_KEY.
+# ----------------------------------------------------------------------
+dev-voice-chat: ## Serve src/live/voice-chat on :5173
+	@echo "[dev-voice-chat] http://localhost:$${PORT:-5173}"
+	@cd src/live/voice-chat && node server.mjs
+
+# ----------------------------------------------------------------------
+# eval-voice-chat — fast regression eval over the loop contract.
+# Parses app.js for tool-registry parity, boots server.mjs with no keys,
+# and asserts the refusal / allowlist contracts. Finishes in ~1s.
+# ----------------------------------------------------------------------
+eval-voice-chat: ## Run src/live/voice-chat/eval.mjs
+	@echo "[eval-voice-chat]"
+	@node src/live/voice-chat/eval.mjs
 
 # ----------------------------------------------------------------------
 # doctor-web — are we healthy?

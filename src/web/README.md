@@ -26,6 +26,15 @@ Cross-check against `sources.md` if something looks off.
 | `references.md` | You want the canonical GitHub / npm links (cookbooks, skills, SDK repos) |
 | `sources.md` | You want to verify a claim or note the version floor on a feature |
 
+Adjacent knowledge areas:
+
+- `../live/` — realtime voice / video / avatar surfaces. The first demo
+  is `../live/voice-chat/`, a browser page that wires a Gemini Live
+  WebSocket to a code-execute-evaluate loop and optional Anam / HeyGen
+  avatar. Claude's Messages API still fronts the heavy reasoning via an
+  `ask_claude` tool — see `../live/voice-chat/gemini-live.md` for the
+  split.
+
 ## How to use
 
 - These are reference cards, not prose. Read the one relevant file, not
