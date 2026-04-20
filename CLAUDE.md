@@ -60,6 +60,7 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/sources.md` — provenance for every claim above
 - `src/live/README.md` — realtime voice / video / avatar surfaces (Gemini Live, Anam, HeyGen)
 - `src/live/voice-chat/` — runnable browser demo: mic → Gemini Live → code-execute-evaluate loop → optional avatar
+- `src/Task/backlog/{frontend,voice-chat,other}/` — deferred-work staging area (short-lived; promote to an issue or delete)
 
 ## Non-terminal entry points we care about
 
