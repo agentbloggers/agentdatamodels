@@ -88,6 +88,13 @@ Directories:
 - `tool_use` — customer service agents, calculators, SQL
 - `tool_evaluation` — frameworks for evaluating tool effectiveness
 
+## Programmatic advertising library
+
+Reference snapshot lives at `src/advertising/` (outside `src/web/`):
+ArXiv PDFs, IAB OpenRTB 2.6 spec, `wnzhang/rtb-papers` README mirror,
+and catalog-only pointers for books / blogs / Python + npm packages /
+HuggingFace datasets. See `src/advertising/README.md`.
+
 ## Docs pages loaded during setup
 
 Every claim in this folder traces back to one of these (see

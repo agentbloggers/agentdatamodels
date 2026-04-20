@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'unsafe-inline' blob: 'unsafe-eval'; connect-src 'none';">
+<title>voice-chat sandbox</title>
+</head>
+<body>
+<script>
+// Untrusted-code executor. The parent page posts { id, kind: "run_js", source };
+// we run it inside a Worker with a 2s budget and post back { id, result }.
+window.addEventListener("message", (ev) => {
+  const { id, kind, source } = ev.data || {};
+  if (kind !== "run_js") return;
+
+  const workerCode = `
+    self.onmessage = async (e) => {
+      const logs = [];
+      const origLog = console.log;
+      console.log = (...args) => { logs.push(args.map(a => typeof a === "string" ? a : JSON.stringify(a)).join(" ")); };
+      try {
+        const fn = new Function("return (async () => { " + e.data + " })();");
+        const value = await fn();
+        self.postMessage({ status: "ok", value, logs });
+      } catch (err) {
+        self.postMessage({ status: "error", error: String(err && err.message || err), logs });
+      }
+    };
+  `;
+  const blob = new Blob([workerCode], { type: "application/javascript" });
+  const url = URL.createObjectURL(blob);
+  const w = new Worker(url);
+  const t0 = performance.now();
+  const timeout = setTimeout(() => {
+    w.terminate(); URL.revokeObjectURL(url);
+    parent.postMessage({ id, result: { status: "error", error: "wall-time budget 2000ms exceeded" } }, "*");
+  }, 2000);
+  w.onmessage = (m) => {
+    clearTimeout(timeout); w.terminate(); URL.revokeObjectURL(url);
+    const latency_ms = Math.round(performance.now() - t0);
+    parent.postMessage({ id, result: { ...m.data, latency_ms } }, "*");
+  };
+  w.onerror = (err) => {
+    clearTimeout(timeout); w.terminate(); URL.revokeObjectURL(url);
+    parent.postMessage({ id, result: { status: "error", error: String(err.message || err) } }, "*");
+  };
+  w.postMessage(source);
+});
+</script>
+</body>
+</html>

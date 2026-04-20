@@ -32,6 +32,8 @@ Pinned upstream versions live in `src/web/dependencies/manifest.yaml`.
 - `make flow-news` — fetch both claude-code CHANGELOG sources + compute delta
 - `make flow-score` — Opus 4.6 scores the delta + emits a draft spec
 - `make flow-run SPEC=…` — full CEE loop for one Gemmah video spec
+- `make dev-voice-chat` — serve `src/live/voice-chat/` on :5173 (needs `GEMINI_API_KEY`)
+- `make eval-voice-chat` — fast regression eval over the voice-chat loop contract
 
 Bootstrap is only needed in a cloud session — locally you probably
 already have everything.
@@ -61,6 +63,9 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/sources.md` — provenance for every claim above
 - `src/flow/` — Gemmah video pipeline (Veo 3.1 + Nano Banana); CEE loop
   over `claude-code` CHANGELOG deltas, outputs to Google Drive
+- `src/live/README.md` — realtime voice / video / avatar surfaces (Gemini Live, Anam, HeyGen)
+- `src/live/voice-chat/` — runnable browser demo: mic → Gemini Live → code-execute-evaluate loop → optional avatar
+- `src/Task/backlog/{frontend,voice-chat,other}/` — deferred-work staging area (short-lived; promote to an issue or delete)
 
 ## Non-terminal entry points we care about
 
