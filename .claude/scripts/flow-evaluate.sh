@@ -57,28 +57,34 @@ case "$TOP" in
     exit 0
     ;;
   partial_pass|fail)
-    # Look at which aspects failed and check retry budget.
     FAILING_ASPECTS=$(jq -r '.aspects | to_entries[] | select(.value.overall=="fail") | .key' "$VERDICT_PATH")
     for aspect in $FAILING_ASPECTS; do
-      retries_used=$(jq --arg a "$aspect" '[.outputs[] | select(.aspect==$a) | .retries_used // 0] | first // 0' "$SPEC")
+      retries_used=$(jq -r --arg a "$aspect" '[.outputs[] | select(.aspect==$a) | .retries_used // 0] | first // 0' "$SPEC")
       if [ "$retries_used" -ge 3 ]; then
         log "[$aspect] retry budget exhausted (3/3). Marking needs_human_review."
         jq '.verdict = "needs_human_review"' "$VERDICT_PATH" > "${VERDICT_PATH}.tmp" \
           && mv "${VERDICT_PATH}.tmp" "$VERDICT_PATH"
         exit 3
       fi
-      log "[$aspect] regenerating (retry $((retries_used+1))/3)"
-      # Clear this aspect's outputs and bump retries_used, then re-run generate.
-      jq --arg a "$aspect" --argjson r $((retries_used+1)) '
+      new_retries=$((retries_used + 1))
+      log "[$aspect] regenerating (retry $new_retries/3)"
+
+      # retry.json: same spec, restricted to the one failing aspect, with its
+      # previous output dropped so flow-generate.sh re-populates it cleanly.
+      jq --arg a "$aspect" '
         .outputs = [.outputs[] | select(.aspect != $a)] |
-        .aspects = [$a] |
-        ._retry_hint = (.verdict // null)
+        .aspects = [$a]
       ' "$SPEC" > "${SPEC}.retry.json"
+
       bash .claude/scripts/flow-generate.sh "${SPEC}.retry.json"
-      # Merge the regenerated output back into the main spec.
-      jq --slurpfile r "${SPEC}.retry.json" '
-        .outputs = (.outputs + ($r[0].outputs)) |
-        . as $orig | .outputs |= map(. + {retries_used: (.retries_used // 0)})
+
+      # Replace (not append) the failing aspect's output with the regenerated
+      # one, and stamp the incremented retries_used on it.
+      jq --slurpfile r "${SPEC}.retry.json" --arg a "$aspect" --argjson n "$new_retries" '
+        .outputs = (
+          [.outputs[] | select(.aspect != $a)] +
+          ($r[0].outputs | map(.retries_used = $n))
+        )
       ' "$SPEC" > "${SPEC}.tmp" && mv "${SPEC}.tmp" "$SPEC"
       rm -f "${SPEC}.retry.json"
     done

@@ -30,7 +30,7 @@ SPEC="${1:-}"
 [ -n "$SPEC" ] || { echo "usage: $0 <spec-path>" >&2; exit 2; }
 [ -f "$SPEC" ] || { echo "spec not found: $SPEC" >&2; exit 2; }
 
-log()  { printf "[flow-generate] %s\n" "$*"; }
+log()  { printf "[flow-generate] %s\n" "$*" >&2; }
 fail() { printf "[flow-generate] ERROR: %s\n" "$*" >&2; exit 1; }
 
 command -v curl    >/dev/null 2>&1 || fail "curl required"
@@ -214,10 +214,25 @@ dispatch_veo () {
 }
 
 declare -A MP4S=()
+declare -A PIDS=()
+result_dir="$(mktemp -d)"
+trap 'rm -rf "$result_dir"' RETURN
+
 for aspect in $ASPECTS; do
-  mp4="$(dispatch_veo "$aspect")"
-  MP4S[$aspect]="$mp4"
+  safe_aspect="${aspect/:/-}"
+  ( dispatch_veo "$aspect" > "$result_dir/$safe_aspect.path" ) &
+  PIDS[$aspect]=$!
 done
+
+for aspect in "${!PIDS[@]}"; do
+  wait "${PIDS[$aspect]}" || fail "[$aspect] dispatch failed"
+done
+
+for aspect in $ASPECTS; do
+  safe_aspect="${aspect/:/-}"
+  MP4S[$aspect]="$(cat "$result_dir/$safe_aspect.path")"
+done
+rm -rf "$result_dir"
 
 # -----------------------------------------------------------------
 # 5. Upload each mp4 to Drive via a claude -p --bare delegation.
@@ -260,8 +275,8 @@ for aspect, drive_id in uploads.items():
         "aspect": aspect,
         "drive_file_id": drive_id,
         "generated_at": now,
-        "retries_used": 0,
     })
+# flow-evaluate.sh is the sole writer of retries_used; don't reset it here.
 spec["outputs"] = new_outputs
 open("$SPEC", "w").write(json.dumps(spec, indent=2) + "\n")
 PY
