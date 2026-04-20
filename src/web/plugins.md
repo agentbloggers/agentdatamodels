@@ -27,6 +27,15 @@ scope = travels to cloud sessions).
 | `commit-commands` | `/commit`, `/commit-push-pr`, `/clean_gone` |
 | `code-review` | Parallel-agent PR review with confidence scoring |
 | `pr-review-toolkit` | Six specialized PR reviewers (types, comments, silent failures, etc.) |
+| `claude-md-management` | Keeps CLAUDE.md honest — detects bloat, dead references, paid-every-turn waste |
+| `plugin-dev` | Scaffolds and tests new plugins in this repo |
+| `agent-sdk-dev` | Dev toolkit for Agent SDK workflows (`@anthropic-ai/claude-agent-sdk`) |
+| `mcp-server-dev` | Scaffold, test, and publish MCP servers — directly relevant to MCP Server Dev work here |
+| `skill-creator` | Author and validate new skills without leaving the session |
+| `hookify` | Turns directives into enforced hooks (SessionStart / PreToolUse / PostToolUse / Stop) |
+| `claude-code-setup` | Bootstrap and health-check new Claude Code projects; complements `make doctor-web` |
+| `ralph-loop` | Cloud analogue of `/loop` — schedule recurring prompts from cloud sessions and Routines |
+| `session-report` | Explorable HTML report of a session — tokens, cache efficiency, subagents, skills. Surfaces data the CLI otherwise hides. |
 
 ### From `claude-plugins-official`
 
@@ -35,6 +44,7 @@ scope = travels to cloud sessions).
 | `github` | MCP GitHub integration for the PR flow |
 | `typescript-lsp` | LSP diagnostics if/when we bundle the dashboard with types |
 | `figma` | If design drops start coming via Figma |
+| `playwright` | Browser automation via Microsoft's MCP server — enables real DOM/JS testing of `index.html` beyond the current `make test-web` smoke fetch |
 
 ## Install scopes
 
