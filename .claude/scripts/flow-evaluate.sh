@@ -19,7 +19,7 @@ SPEC="${1:-}"
 [ -n "$SPEC" ] || { echo "usage: $0 <spec-path>" >&2; exit 2; }
 [ -f "$SPEC" ] || { echo "spec not found: $SPEC" >&2; exit 2; }
 
-log()  { printf "[flow-evaluate] %s\n" "$*"; }
+log()  { printf "[flow-evaluate] %s\n" "$*" >&2; }
 fail() { printf "[flow-evaluate] ERROR: %s\n" "$*" >&2; exit 1; }
 
 command -v jq     >/dev/null 2>&1 || fail "jq required"

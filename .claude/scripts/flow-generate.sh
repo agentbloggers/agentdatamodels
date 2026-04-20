@@ -216,7 +216,7 @@ dispatch_veo () {
 declare -A MP4S=()
 declare -A PIDS=()
 result_dir="$(mktemp -d)"
-trap 'rm -rf "$result_dir"' RETURN
+trap 'rm -rf "$result_dir"' EXIT
 
 for aspect in $ASPECTS; do
   safe_aspect="${aspect/:/-}"
@@ -232,7 +232,6 @@ for aspect in $ASPECTS; do
   safe_aspect="${aspect/:/-}"
   MP4S[$aspect]="$(cat "$result_dir/$safe_aspect.path")"
 done
-rm -rf "$result_dir"
 
 # -----------------------------------------------------------------
 # 5. Upload each mp4 to Drive via a claude -p --bare delegation.

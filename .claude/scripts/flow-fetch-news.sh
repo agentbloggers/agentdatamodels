@@ -75,8 +75,12 @@ for pid in "${PIDS[@]}"; do
   wait "$pid" || true
 done
 
-# Concat per-source JSON files into one JSONL file.
+# Concat per-source JSON files into one JSONL file. Hard-fail if every
+# fetch_one failed — a totally-empty sources[] would silently mask a
+# broken source list or network outage.
 cat "$tmpdir"/*.json > "$entries_file" 2>/dev/null || true
+successful=$(grep -c '"sha256":' "$entries_file" 2>/dev/null || echo 0)
+[ "$successful" -gt 0 ] || fail "every source fetch failed — check network + SOURCES[]"
 
 # Compute delta against previous run (new lines added in top_section per source).
 delta_file="$tmpdir/delta.json"
