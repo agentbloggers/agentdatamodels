@@ -1,0 +1,130 @@
+{
+  "papers": [
+    {
+      "id": "2408.07685",
+      "title": "Auto-bidding and Auctions in Online Advertising: A Survey",
+      "authors": "Aggarwal et al.",
+      "year": 2024,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2408.07685.pdf",
+      "topics": ["auto-bidding", "auctions", "survey"]
+    },
+    {
+      "id": "2508.06550",
+      "title": "Generative Bid Shading in Real-Time Bidding Advertising",
+      "authors": "unknown",
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2508.06550.pdf",
+      "topics": ["bid-shading", "rtb", "generative", "grpo"]
+    },
+    {
+      "id": "2402.07363",
+      "title": "Strategically-Robust Learning Algorithms for Bidding in First-Price Auctions",
+      "authors": "unknown",
+      "year": 2024,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2402.07363.pdf",
+      "topics": ["first-price", "robust-bidding"]
+    },
+    {
+      "id": "2512.15717",
+      "title": "Strategic Bid Shading in RTB Using Minority Game Theory",
+      "authors": "unknown",
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2512.15717.pdf",
+      "topics": ["bid-shading", "minority-game", "game-theory"]
+    },
+    {
+      "id": "2202.10462",
+      "title": "Click-Through Rate Prediction in Online Advertising: A Literature Review",
+      "authors": "Yang & Zhai",
+      "year": 2022,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2202.10462.pdf",
+      "topics": ["ctr", "survey"]
+    },
+    {
+      "id": "2507.11246",
+      "title": "Generative CTR Prediction with Applications to Search Advertising",
+      "authors": "unknown",
+      "year": 2025,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2507.11246.pdf",
+      "topics": ["ctr", "generative", "search-ads"]
+    },
+    {
+      "id": "2306.01799",
+      "title": "Pairwise Ranking Losses of CTRs for Welfare Maximization in Ad Auctions",
+      "authors": "unknown",
+      "year": 2023,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/2306.01799.pdf",
+      "topics": ["ctr", "pairwise-ranking", "welfare"]
+    },
+    {
+      "id": "1610.03013",
+      "title": "Display Advertising with Real-Time Bidding (RTB) and Behavioural Targeting",
+      "authors": "Wang, Zhang & Yuan",
+      "year": 2016,
+      "venue": "arXiv",
+      "url": "https://arxiv.org/pdf/1610.03013.pdf",
+      "topics": ["rtb", "display-ads", "survey", "foundational"]
+    },
+    {
+      "id": "1703.04247",
+      "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+      "authors": "Guo et al.",
+      "year": 2017,
+      "venue": "IJCAI 2017",
+      "url": "https://arxiv.org/pdf/1703.04247.pdf",
+      "topics": ["ctr", "factorization-machine", "neural-network"]
+    },
+    {
+      "id": "1706.06978",
+      "title": "Deep Interest Network for Click-Through Rate Prediction",
+      "authors": "Zhou et al.",
+      "year": 2018,
+      "venue": "KDD 2018",
+      "url": "https://arxiv.org/pdf/1706.06978.pdf",
+      "topics": ["ctr", "attention", "din"]
+    },
+    {
+      "id": "2008.13535",
+      "title": "DCN V2: Improved Deep & Cross Network and Practical Lessons for Web-scale Learning to Rank Systems",
+      "authors": "Wang et al.",
+      "year": 2020,
+      "venue": "WWW 2021",
+      "url": "https://arxiv.org/pdf/2008.13535.pdf",
+      "topics": ["ctr", "feature-cross", "ranking"]
+    },
+    {
+      "id": "2009.09259",
+      "title": "Bid Shading in the Brave New World of First-Price Auctions",
+      "authors": "Gligorijevic et al.",
+      "year": 2020,
+      "venue": "AdKDD 2020",
+      "url": "https://arxiv.org/pdf/2009.09259.pdf",
+      "topics": ["bid-shading", "first-price"]
+    },
+    {
+      "id": "1701.02490",
+      "title": "Real-Time Bidding by Reinforcement Learning in Display Advertising",
+      "authors": "Cai et al.",
+      "year": 2017,
+      "venue": "WSDM 2017",
+      "url": "https://arxiv.org/pdf/1701.02490.pdf",
+      "topics": ["rtb", "reinforcement-learning", "foundational"]
+    },
+    {
+      "id": "1806.03514",
+      "title": "Field-weighted Factorization Machines for Click-Through Rate Prediction in Display Advertising",
+      "authors": "Pan et al.",
+      "year": 2018,
+      "venue": "WWW 2018",
+      "url": "https://arxiv.org/pdf/1806.03514.pdf",
+      "topics": ["ctr", "factorization-machine", "display-ads"]
+    }
+  ]
+}
