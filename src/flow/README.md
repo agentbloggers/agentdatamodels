@@ -13,30 +13,42 @@ Outputs land in Google Drive via the Drive MCP.
 
 ## The CEE (code-execute-evaluate) loop
 
+Two Claude models chain across the loop: **Opus 4.6 for CODE** (fast
+authoring + tool dispatch), **Opus 4.7 for EVALUATE** (latest, best
+vision judgment). The `--model` flag is passed explicitly on every
+`claude -p --bare` call so the wrapping session can't downgrade.
+
 ```
   ┌─────────────────────────┐
-  │  1. CODE                │  build a video spec
-  │     fetch CHANGELOGs    │   → .claude/scripts/flow-fetch-news.sh
-  │     score emotion       │   → claude -p --bare --json-schema
-  │     write spec JSON     │   → src/flow/pipelines/specs/<date>-<slug>.json
+  │  1. CODE                │  Opus 4.6 — authoring
+  │     fetch CHANGELOGs    │   → .claude/scripts/flow-fetch-news.sh (no Claude)
+  │     score emotion       │   → flow-score-news.sh + --model claude-opus-4-6
+  │     draft spec          │   → src/flow/pipelines/specs/<date>-<slug>.draft.json
+  │     (human reviews)     │   → rename .draft.json → .json, tweak as needed
   └─────────────┬───────────┘
                 │
   ┌─────────────▼───────────┐
-  │  2. EXECUTE             │  Gemini API — programmatic
-  │     Nano Banana Pro     │   → generate reference portrait if missing
+  │  2. EXECUTE             │  Gemini API (no Claude)
+  │     Nano Banana Pro     │   → reference portrait if missing
   │     Veo 3.1 Fast x2     │   → 16:9 + 9:16 in parallel
-  │     Drive upload        │   → mcp__…__create_file
+  │     Drive upload        │   → Opus 4.6 delegates to Drive MCP
   └─────────────┬───────────┘
                 │
   ┌─────────────▼───────────┐
-  │  3. EVALUATE            │  gemmah-director subagent
-  │     rubric scoring      │   → character continuity / AI-smell / hook
+  │  3. EVALUATE            │  Opus 4.7 — gemmah-director subagent
+  │     rubric scoring      │   → continuity / AI-smell / hook / aspect
   │     verdict JSON        │   → <spec>.verdict.json
   └─────────────┬───────────┘
                 │ pass                 │ fail (retries < 3)
                 ▼                      ▼
          ship to Drive          patch prompt → loop to step 2
 ```
+
+**Why 4.6 → 4.7 and not 4.7 throughout.** CODE stage is latency-sensitive
+(news score + spec draft happens hourly via Routine). EVALUATE stage is
+quality-sensitive and infrequent (once per generated video). Opus 4.6
+is ≈40% faster at similar prompt sizes; the per-video cost delta of
+using 4.7 only at the gate is worth it.
 
 ## One-shot run
 
@@ -46,12 +58,15 @@ export GOOGLE_DRIVE_FOLDER_ID=...
 make flow-run SPEC=src/flow/pipelines/specs/2026-04-20-car-night.json
 ```
 
-Or explicitly:
+Or explicitly (Opus 4.6 calls are marked **[4.6]**; 4.7 calls **[4.7]**):
 
 ```bash
-bash .claude/scripts/flow-fetch-news.sh
-bash .claude/scripts/flow-generate.sh  src/flow/pipelines/specs/2026-04-20-car-night.json
-bash .claude/scripts/flow-evaluate.sh  src/flow/pipelines/specs/2026-04-20-car-night.json
+bash .claude/scripts/flow-fetch-news.sh                                            # pure curl
+bash .claude/scripts/flow-score-news.sh                                            # [4.6] → draft spec
+mv src/flow/pipelines/specs/<date>-<slug>.draft.json \
+   src/flow/pipelines/specs/<date>-<slug>.json                                     # human review
+bash .claude/scripts/flow-generate.sh  src/flow/pipelines/specs/<date>-<slug>.json # [4.6] upload
+bash .claude/scripts/flow-evaluate.sh  src/flow/pipelines/specs/<date>-<slug>.json # [4.7] rubric
 ```
 
 ## Files

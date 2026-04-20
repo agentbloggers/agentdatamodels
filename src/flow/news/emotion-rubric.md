@@ -1,9 +1,21 @@
 # Emotion rubric — scoring a CHANGELOG delta for virality
 
-After `flow-fetch-news.sh` produces the per-source delta, we ask
-Claude (via `claude -p --bare --json-schema`) to score **each new
-bullet** against this rubric and return the top-scoring one plus a
-winning emotion class.
+After `flow-fetch-news.sh` produces the per-source delta,
+`flow-score-news.sh` asks **Opus 4.6** (the CODE stage of the CEE
+chain — see `src/flow/README.md`) to score **each new bullet**
+against this rubric and return the top-scoring one plus a winning
+emotion class. Invocation shape:
+
+```bash
+claude -p --bare "$PROMPT" \
+  --model claude-opus-4-6 \
+  --output-format json \
+  --json-schema "$SCHEMA"
+```
+
+The `--model` flag is non-negotiable: without it, the wrapping
+session's default model propagates, and `flow-run` outputs stop being
+reproducible across local / cloud / Routine contexts.
 
 ## Emotion classes (pick exactly one)
 
@@ -70,8 +82,10 @@ The `claude -p --bare` call uses this schema (fed to `--json-schema`):
 
 ## How the winner feeds the spec
 
-The winning `{delta_summary, emotion}` flows into
-`src/flow/pipelines/specs/<date>-<slug>.json` as:
+The winning `{delta_summary, emotion}` is stitched by
+`flow-score-news.sh` into a draft spec at
+`src/flow/pipelines/specs/<date>-<slug>.draft.json` that the author
+reviews, renames to `.json`, and hands to `flow-generate.sh`. Shape:
 
 ```json
 {

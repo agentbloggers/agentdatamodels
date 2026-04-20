@@ -30,6 +30,7 @@ Pinned upstream versions live in `src/web/dependencies/manifest.yaml`.
 - `make build-web` — no-op for now (static site)
 - `make graphql-web` — hash-check tracked docs + GraphQL-query pinned repos
 - `make flow-news` — fetch both claude-code CHANGELOG sources + compute delta
+- `make flow-score` — Opus 4.6 scores the delta + emits a draft spec
 - `make flow-run SPEC=…` — full CEE loop for one Gemmah video spec
 
 Bootstrap is only needed in a cloud session — locally you probably

@@ -37,8 +37,12 @@ VERDICT_PATH="${SPEC%.json}.verdict.json"
 #   - Returns the verdict JSON shape described in the rubric
 PROMPT="You are gemmah-director. Evaluate the spec at \`$SPEC\` against the rubric at \`src/flow/evaluate/rubric.md\`. For each entry in the spec's outputs[], fetch the mp4 by drive_file_id via the Drive MCP, sample 8 frames (t=0,1,2,3,4,5,6,7s) plus the full audio, and score every rubric check. Return the verdict JSON exactly as specified in the rubric. No prose."
 
-log "delegating to gemmah-director subagent"
+log "delegating to gemmah-director subagent (Opus 4.7)"
+# EVALUATE stage of the CEE chain: the gemmah-director subagent
+# frontmatter already pins model: claude-opus-4-7, and we pass
+# --model explicitly too so the wrapping session can't downgrade.
 VERDICT=$(claude -p --bare "$PROMPT" \
+  --model claude-opus-4-7 \
   --output-format json \
   --agent gemmah-director \
   | jq '.structured_output // .result // empty')

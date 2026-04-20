@@ -252,7 +252,11 @@ UPLOAD_PROMPT="Upload each mp4 path below to Google Drive folder id \`$GOOGLE_DR
 Paths by aspect:
 $UPLOAD_JSON"
 
+# CODE stage of the CEE chain: Opus 4.6 handles all "authoring +
+# tool-dispatch" Claude calls. EVALUATE stage (flow-evaluate.sh) is
+# pinned to Opus 4.7 for the vision rubric.
 UPLOAD_RESULT=$(claude -p --bare "$UPLOAD_PROMPT" \
+  --model claude-opus-4-6 \
   --output-format json \
   --json-schema '{"type":"object","patternProperties":{"^(16:9|9:16)$":{"type":"string"}},"additionalProperties":false}' \
   | jq '.structured_output')
