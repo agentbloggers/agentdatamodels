@@ -1,0 +1,11 @@
+# Binary artifacts from the pipeline — never committed.
+out/
+tmp/
+ingredients/
+*.mp4
+*.png
+*.jpg
+*.webp
+
+# Verdict JSONs are per-run and get large; keep only the spec.
+pipelines/specs/*.verdict.json

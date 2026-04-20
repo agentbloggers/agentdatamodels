@@ -1,4 +1,4 @@
-.PHONY: help bootstrap-web install-web start-web stop-web lint-web fmt-web test-web doctor-web build-web graphql-web observe-up observe-down dev-voice-chat eval-voice-chat
+.PHONY: help bootstrap-web install-web start-web stop-web lint-web fmt-web test-web doctor-web build-web graphql-web observe-up observe-down flow-run flow-news flow-score dev-voice-chat eval-voice-chat
 
 # Default: show help
 help:
@@ -192,3 +192,35 @@ build-web: ## Build artifacts (no-op today)
 graphql-web: ## Hash upstream docs + GraphQL-query pinned GitHub repos
 	@bash .claude/scripts/track-upstream.sh
 	@bash .claude/scripts/graphql-deps.sh
+
+# ----------------------------------------------------------------------
+# flow-news — fetch both claude-code CHANGELOG.md sources, hash them,
+# and write the delta to .claude/graphql-runs/flow-news-<ts>.json.
+# Consumed by flow-run. Safe to invoke on its own to check for new
+# deltas without generating a video.
+# ----------------------------------------------------------------------
+flow-news: ## Fetch CHANGELOG sources + compute delta
+	@bash .claude/scripts/flow-fetch-news.sh
+
+# ----------------------------------------------------------------------
+# flow-score — Opus 4.6 CODE stage. Reads the newest flow-news-*.json,
+# scores each new CHANGELOG bullet against src/flow/news/emotion-rubric.md,
+# and writes a .draft.json spec. The author reviews + renames to .json.
+# ----------------------------------------------------------------------
+flow-score: ## Opus 4.6 scores the latest CHANGELOG delta → draft spec
+	@bash .claude/scripts/flow-score-news.sh
+
+# ----------------------------------------------------------------------
+# flow-run — full CEE loop for a Gemmah video.
+# Usage: make flow-run SPEC=src/flow/pipelines/specs/<date>-<slug>.json
+# Requires GEMINI_API_KEY + GOOGLE_DRIVE_FOLDER_ID in the env.
+# Models: generate.sh uses Opus 4.6 for CODE dispatches; evaluate.sh
+# uses Opus 4.7 for the vision rubric (see src/flow/README.md).
+# ----------------------------------------------------------------------
+flow-run: ## Full CEE loop for one Gemmah video spec (SPEC=path required)
+	@if [ -z "$(SPEC)" ]; then \
+		echo "usage: make flow-run SPEC=src/flow/pipelines/specs/<date>-<slug>.json"; exit 2; \
+	fi
+	@bash .claude/scripts/flow-fetch-news.sh
+	@bash .claude/scripts/flow-generate.sh "$(SPEC)"
+	@bash .claude/scripts/flow-evaluate.sh "$(SPEC)"

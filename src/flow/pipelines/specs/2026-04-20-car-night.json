@@ -1,0 +1,25 @@
+{
+  "date": "2026-04-20",
+  "character": "gemmah",
+  "location": "car-night",
+  "duration_seconds": 8,
+  "aspects": ["16:9", "9:16"],
+  "news": {
+    "source_url": "https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md",
+    "delta_summary": "claude-code 2.1.114 — /fire HTTP endpoint lets routines run on external webhook triggers",
+    "emotional_beat": "awe",
+    "emotion_score": 0.78
+  },
+  "hook": "wait — Claude just shipped a whole HTTP endpoint for your routines",
+  "beat_sheet": [
+    { "t": "0.0-2.0", "desc": "hook, direct-to-camera, slight head tilt" },
+    { "t": "2.0-6.0", "desc": "explain /fire — you POST to a per-routine URL and it runs the cloud session, no scheduling needed" },
+    { "t": "6.0-8.0", "desc": "payoff — 'so basically your GitHub bot can talk to Claude now', small glance down" }
+  ],
+  "veo_model": "veo-3.1-fast-generate-preview",
+  "image_model": "nano-banana-pro",
+  "reference_frames": [
+    "src/flow/ingredients/gemmah-portrait-neutral.png"
+  ],
+  "outputs": []
+}
