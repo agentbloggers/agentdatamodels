@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://agentdatamodels/src/flow/pipelines/spec.schema.json",
+  "title": "Gemmah video spec",
+  "description": "One shipped video = one spec. Consumed by .claude/scripts/flow-generate.sh.",
+  "type": "object",
+  "required": [
+    "date",
+    "character",
+    "location",
+    "duration_seconds",
+    "aspects",
+    "news",
+    "hook",
+    "beat_sheet",
+    "veo_model",
+    "image_model"
+  ],
+  "properties": {
+    "date": {
+      "type": "string",
+      "format": "date",
+      "description": "YYYY-MM-DD. Used for filename and Drive upload path."
+    },
+    "character": {
+      "type": "string",
+      "enum": ["gemmah"],
+      "description": "Must match a file under src/flow/character/<name>.md."
+    },
+    "location": {
+      "type": "string",
+      "description": "Must match a file under src/flow/locations/<location>.md."
+    },
+    "duration_seconds": {
+      "type": "integer",
+      "const": 8,
+      "description": "All Gemmah videos are 8s. Locked, not configurable."
+    },
+    "aspects": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "enum": ["16:9", "9:16"] },
+      "minItems": 1,
+      "maxItems": 2,
+      "description": "Which aspect ratios to generate. Default ships both."
+    },
+    "news": {
+      "type": "object",
+      "required": ["source_url", "delta_summary", "emotional_beat", "emotion_score"],
+      "properties": {
+        "source_url":     { "type": "string", "format": "uri" },
+        "delta_summary":  { "type": "string", "maxLength": 200 },
+        "emotional_beat": {
+          "type": "string",
+          "enum": ["awe", "surprise", "FOMO", "frustration", "insider"]
+        },
+        "emotion_score":  { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "hook": {
+      "type": "string",
+      "maxLength": 120,
+      "description": "First 2 seconds verbatim. See src/flow/hooks/viral-patterns.md."
+    },
+    "beat_sheet": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["t", "desc"],
+        "properties": {
+          "t":    { "type": "string", "pattern": "^[0-9]+\\.[0-9]+-[0-9]+\\.[0-9]+$" },
+          "desc": { "type": "string" }
+        }
+      }
+    },
+    "veo_model": {
+      "type": "string",
+      "enum": [
+        "veo-3.1-fast-generate-preview",
+        "veo-3.1-generate-preview",
+        "veo-3.0-fast-generate-001"
+      ],
+      "description": "Friendly names (veo-3.1-fast-generate-preview) are resolved to real Gemini API IDs in flow-generate.sh. Use veo-3.0-fast-generate-001 for the free-tier fallback."
+    },
+    "image_model": {
+      "type": "string",
+      "enum": [
+        "nano-banana",
+        "nano-banana-pro",
+        "nano-banana-2",
+        "gemini-2.5-flash-image",
+        "gemini-3-pro-image-preview",
+        "gemini-3.1-flash-image-preview"
+      ],
+      "description": "Friendly names map: nano-banana-pro → gemini-3-pro-image-preview; nano-banana-2 → gemini-3.1-flash-image-preview; nano-banana → gemini-2.5-flash-image (free tier)."
+    },
+    "reference_frames": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths (relative to repo root) of Nano Banana ingredients passed to Veo."
+    },
+    "outputs": {
+      "type": "array",
+      "description": "Populated by flow-generate.sh. Each entry carries drive_file_id when GOOGLE_DRIVE_FOLDER_ID is set, otherwise local_path (repo-relative).",
+      "items": {
+        "type": "object",
+        "required": ["aspect", "generated_at"],
+        "oneOf": [
+          { "required": ["drive_file_id"] },
+          { "required": ["local_path"] }
+        ],
+        "properties": {
+          "aspect":            { "enum": ["16:9", "9:16"] },
+          "drive_file_id":     { "type": "string" },
+          "local_path":        { "type": "string", "description": "Repo-relative mp4 path; set when Drive upload is disabled." },
+          "duration_actual_s": { "type": "number" },
+          "generated_at":      { "type": "string", "format": "date-time" },
+          "retries_used":      { "type": "integer", "minimum": 0, "maximum": 3 }
+        }
+      }
+    }
+  }
+}

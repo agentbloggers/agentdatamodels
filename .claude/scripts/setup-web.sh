@@ -16,17 +16,19 @@ set -euo pipefail
 log() { printf "[setup-web] %s\n" "$*"; }
 
 # ----- apt deps -----
+# Per /en/claude-code-on-the-web: setup scripts run as root on
+# Ubuntu 24.04, so `apt install` works directly — no sudo needed.
 if ! command -v gh >/dev/null 2>&1; then
   log "installing gh"
-  apt-get update
-  apt-get install -y gh jq curl yq
+  apt update && apt install -y gh
 else
   log "gh already present: $(gh --version | head -1)"
 fi
 
-# yq and jq for the dependency tracker
+# yq and jq for the dependency tracker. jq is pre-installed per the
+# guide's Utilities row, but install if missing on a drifted image.
 for bin in jq yq curl; do
-  command -v "$bin" >/dev/null 2>&1 || apt-get install -y "$bin"
+  command -v "$bin" >/dev/null 2>&1 || apt install -y "$bin"
 done
 
 # ----- services -----

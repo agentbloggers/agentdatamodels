@@ -29,6 +29,9 @@ Pinned upstream versions live in `src/web/dependencies/manifest.yaml`.
 - `make doctor-web` — health check (services, gh auth, CLI version, session URL)
 - `make build-web` — no-op for now (static site)
 - `make graphql-web` — hash-check tracked docs + GraphQL-query pinned repos
+- `make flow-news` — fetch both claude-code CHANGELOG sources + compute delta
+- `make flow-score` — Opus 4.6 scores the delta + emits a draft spec
+- `make flow-run SPEC=…` — full CEE loop for one Gemmah video spec
 - `make dev-voice-chat` — serve `src/live/voice-chat/` on :5173 (needs `GEMINI_API_KEY`)
 - `make eval-voice-chat` — fast regression eval over the voice-chat loop contract
 
@@ -58,6 +61,8 @@ Load `src/web/` files on demand — don't grep all of them up front.
 - `src/web/enterprise/` — Claude Code Max OAuth, GH Enterprise, HF premium, Cloudflare
 - `src/web/references.md` — external canon (cookbooks, skills repo, npm, SDKs)
 - `src/web/sources.md` — provenance for every claim above
+- `src/flow/` — Gemmah video pipeline (Veo 3.1 + Nano Banana); CEE loop
+  over `claude-code` CHANGELOG deltas, outputs to Google Drive
 - `src/live/README.md` — realtime voice / video / avatar surfaces (Gemini Live, Anam, HeyGen)
 - `src/live/voice-chat/` — runnable browser demo: mic → Gemini Live → code-execute-evaluate loop → optional avatar
 - `src/Task/backlog/{frontend,voice-chat,other}/` — deferred-work staging area (short-lived; promote to an issue or delete)

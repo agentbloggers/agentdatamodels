@@ -14,10 +14,11 @@ file mid-session, or run `/agents` to reload).
 | `docs-librarian` | sonnet | project | blue | Curate `src/web/` + refresh against live docs |
 | `routine-builder` | sonnet | project | purple | Design + debug cloud Routines |
 | `plugin-integrator` | sonnet | project | green | `.claude/settings.json` + `.claude-plugins/` |
-| `seed-prompt-keeper` | haiku | project | cyan | Maintain `.claude/seed-prompts/` |
+| `seed-prompt-keeper` | sonnet | project | cyan | Maintain `.claude/seed-prompts/` |
 | `eval-runner` | sonnet | project | orange | Run `src/web/*-evals/` + triage regressions |
+| `gemmah-director` | opus | project | red | EVALUATE-stage quality gate for `src/flow/` videos |
 
-All six use `memory: project` so their learnings live at
+All seven use `memory: project` so their learnings live at
 `.claude/agent-memory/<name>/` and travel with the repo (including to
 cloud sessions).
 
@@ -60,7 +61,8 @@ Fields we deliberately **didn't** set (but are available):
 ├── eval-runner/
 ├── plugin-integrator/
 ├── routine-builder/
-└── seed-prompt-keeper/
+├── seed-prompt-keeper/
+└── gemmah-director/
 ```
 
 When a subagent writes its first memory, the directory is created
