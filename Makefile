@@ -12,7 +12,7 @@ help:
 bootstrap-web: ## Install system deps (gh, etc), start services, auth gh
 	@echo "[bootstrap-web] installing gh"
 	@if ! command -v gh >/dev/null 2>&1; then \
-		apt-get update && apt-get install -y gh; \
+		apt update && apt install -y gh; \
 	fi
 	@echo "[bootstrap-web] verifying gh auth (expects \$$GH_TOKEN)"
 	@if [ -z "$${GH_TOKEN:-}" ]; then \
@@ -46,9 +46,9 @@ install-web: ## Install project-level deps (npm ci + pip)
 # ----------------------------------------------------------------------
 start-web: ## Start Postgres + Redis (cloud: system services; local: compose)
 	@if [ "$${CLAUDE_CODE_REMOTE:-}" = "true" ]; then \
-		echo "[start-web] cloud mode — starting system services"; \
-		service postgresql start >/dev/null 2>&1 || sudo service postgresql start; \
-		service redis-server start >/dev/null 2>&1 || sudo service redis-server start; \
+		echo "[start-web] cloud mode — starting system services (as root)"; \
+		service postgresql start; \
+		service redis-server start; \
 	elif command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then \
 		echo "[start-web] local mode — docker compose up -d postgres redis"; \
 		docker compose up -d postgres redis; \
@@ -61,8 +61,8 @@ start-web: ## Start Postgres + Redis (cloud: system services; local: compose)
 
 stop-web: ## Stop Postgres + Redis (cloud: system services; local: compose)
 	@if [ "$${CLAUDE_CODE_REMOTE:-}" = "true" ]; then \
-		service postgresql stop >/dev/null 2>&1 || sudo service postgresql stop; \
-		service redis-server stop >/dev/null 2>&1 || sudo service redis-server stop; \
+		service postgresql stop; \
+		service redis-server stop; \
 	elif command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then \
 		docker compose down; \
 	else \
