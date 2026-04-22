@@ -33,15 +33,15 @@ VERDICT_PATH="${SPEC%.json}.verdict.json"
 
 # Delegate to the gemmah-director subagent. It:
 #   - Reads src/flow/evaluate/rubric.md
-#   - Reads each output's drive_file_id via the Drive MCP
+#   - Reads each output via drive_file_id (Drive MCP) or local_path (Read)
 #   - Returns the verdict JSON shape described in the rubric
-PROMPT="You are gemmah-director. Evaluate the spec at \`$SPEC\` against the rubric at \`src/flow/evaluate/rubric.md\`. For each entry in the spec's outputs[], fetch the mp4 by drive_file_id via the Drive MCP, sample 8 frames (t=0,1,2,3,4,5,6,7s) plus the full audio, and score every rubric check. Return the verdict JSON exactly as specified in the rubric. No prose."
+PROMPT="You are gemmah-director. Evaluate the spec at \`$SPEC\` against the rubric at \`src/flow/evaluate/rubric.md\`. For each entry in the spec's outputs[], fetch the mp4 — use \`drive_file_id\` via the Drive MCP when present, otherwise \`local_path\` via Read (paths are relative to the repo root). Sample 8 frames (t=0,1,2,3,4,5,6,7s) plus the full audio, and score every rubric check. Return the verdict JSON exactly as specified in the rubric. No prose."
 
 log "delegating to gemmah-director subagent (Opus 4.7)"
-# EVALUATE stage of the CEE chain: the gemmah-director subagent
-# frontmatter already pins model: claude-opus-4-7, and we pass
-# --model explicitly too so the wrapping session can't downgrade.
-VERDICT=$(claude -p --bare "$PROMPT" \
+# --bare dropped: it skips .claude/agents/ autodiscovery, so --agent
+# wouldn't resolve. The EVALUATE stage runs once per video; the
+# startup cost is worth paying to keep agent + MCP wiring intact.
+VERDICT=$(claude -p "$PROMPT" \
   --model claude-opus-4-7 \
   --output-format json \
   --agent gemmah-director \

@@ -14,13 +14,16 @@ against `src/flow/evaluate/rubric.md`, and return a verdict JSON.
 ## Workflow
 
 1. Read the spec path passed in the prompt. It will have
-   `outputs[]` populated with one entry per aspect, each with a
-   `drive_file_id`.
+   `outputs[]` populated with one entry per aspect. Each entry
+   carries either `drive_file_id` (Drive MCP path) or `local_path`
+   (repo-relative mp4 path — use `Read`).
 2. Read `src/flow/evaluate/rubric.md` and
    `src/flow/character/gemmah.md`. These pin the checks.
 3. For each output:
-   - Use the Drive MCP (`download_file_content`) to pull the mp4
-     bytes or sampled frames.
+   - If `drive_file_id` is set, use the Drive MCP
+     (`download_file_content`) to pull the mp4 bytes or sampled
+     frames. If `local_path` is set instead, read the mp4 via
+     `Read` against that path.
    - Run every check in the rubric. You have vision — use it.
    - Compare continuity checks against
      `src/flow/ingredients/gemmah-portrait-neutral.png` if you can
